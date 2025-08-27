@@ -10,7 +10,8 @@ from alembic import context
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
 from backend.database import Base
-
+from backend.auth.models import Users
+from backend.session.models import Session
 from backend.config import settings
 
 config = context.config

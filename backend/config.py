@@ -8,9 +8,11 @@ class Settings(BaseSettings):
     DB_PASS: str
     DB_NAME: str
 
+    COOKIE_NAME: str
+
     GIGACHAT_TOKEN: str
     GIGACHAT_MODEL: str
-    
+
     TG_TOKEN: str
 
     @property
