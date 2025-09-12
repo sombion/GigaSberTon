@@ -9,9 +9,14 @@ from alembic import context
 
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
-from backend.database import Base
-
-from backend.config import settings
+from app.database import Base
+from app.auth.models import Users
+from app.session.models import Session
+from app.applications.models import Applications
+from app.conclusion.models import Conclusion
+from app.notification.models import Notification
+from app.signature.models import Signature
+from app.config import settings
 
 config = context.config
 config.set_main_option("sqlalchemy.url", f"{settings.DATABASE_URL}?async_fallback=True")
@@ -20,6 +25,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 target_metadata = Base.metadata
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -59,9 +65,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
