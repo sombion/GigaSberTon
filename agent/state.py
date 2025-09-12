@@ -4,6 +4,9 @@ from langgraph.graph.message import add_messages
 
 
 class State(TypedDict):
-    messages: Annotated[list, add_messages]
+    tg_id: int
+    input_messages: str
+    templates_data: str
+    output_messages: str
 
 graph_builder = StateGraph(State)
