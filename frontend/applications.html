@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Все заявления</title>
+  <link rel="stylesheet" href="applications.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="page"> 
+    <!-- Верхняя панель -->
+    <div class="header">
+      <nav class="tabs">
+        <a href="applications.html" class="active">Все заявления</a>
+        <a href="conclusion.html">Заключения комиссии</a>
+        <a href="signed.html">Подписанные документы</a>
+      </nav>
+      <div class="profile-link">
+        <a href="profile.html">🔔 Личный кабинет</a>
+      </div>
+    </div>
+
+    <!-- Поиск -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Введите ФИО или кадастровый номер" />
+      <button id="searchBtn">Поиск</button>
+    </div>
+
+    <!-- Счётчик -->
+    <div class="counter">
+      Найдено: <span id="foundCount">0</span> <span id="word">заявлений</span>
+    </div>
+
+    <div class="content">
+      <!-- Фильтры -->
+      <aside class="filters">
+        <h3>Фильтр</h3>
+        <div class="dropdown">
+          <button type="button" class="dropbtn" id="districtBtn">
+            Выберите районы ▾
+          </button>
+          <div id="districtDropdown" class="dropdown-content">
+            <input type="text" id="districtSearch" placeholder="Поиск района..." />
+            <div id="districtList">
+              <label><input type="checkbox" name="district" value="ЦАО" /> ЦАО</label>
+              <label><input type="checkbox" name="district" value="ЮЗАО" /> ЮЗАО</label>
+              <label><input type="checkbox" name="district" value="СЗАО" /> СЗАО</label>
+              <label><input type="checkbox" name="district" value="ВАО" /> ВАО</label>
+              <label><input type="checkbox" name="district" value="Советский" /> Советский</label>
+              <label><input type="checkbox" name="district" value="Левобережный" /> Левобережный</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <label>Дата выезда</label>
+          <p></p>
+          <label for="dateFrom">от:</label>
+          <input type="date" id="dateFrom">
+          <p></p>
+          <label for="dateTo">до:</label>
+          <input type="date" id="dateTo">
+        </div>
+
+        <div class="field">
+          <label><input type="checkbox" id="filterVisit" /> Назначен выезд</label>
+        </div>
+
+        <div class="actions-col">
+          <button id="applyFilters" class="btn-primary">Применить</button>
+          <button id="clearFilters" class="btn-ghost">Сбросить</button>
+        </div>
+      </aside>
+
+      <!-- Список заявлений -->
+      <main class="applications-list" id="applicationsList">
+        <div class="app-card" data-district="ЦАО">
+          <span>Иванов И.И. | 77:01:0000000:111 | ЦАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="ЮЗАО">
+          <span>Петров П.П. | 77:01:0000000:222 | ЮЗАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="СЗАО">
+          <span>Сидоров С.С. | 77:01:0000000:333 | СЗАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="ВАО">
+          <span>Кузнецов К.К. | 77:01:0000000:444 | ВАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+                <div class="app-card" data-district="ЦАО">
+          <span>Иванов И.И. | 77:01:0000000:111 | ЦАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="ЮЗАО">
+          <span>Петров П.П. | 77:01:0000000:222 | ЮЗАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="СЗАО">
+          <span>Сидоров С.С. | 77:01:0000000:333 | СЗАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="ВАО">
+          <span>Кузнецов К.К. | 77:01:0000000:444 | ВАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+                <div class="app-card" data-district="ЦАО">
+          <span>Иванов И.И. | 77:01:0000000:111 | ЦАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="ЮЗАО">
+          <span>Петров П.П. | 77:01:0000000:222 | ЮЗАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="СЗАО">
+          <span>Сидоров С.С. | 77:01:0000000:333 | СЗАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+        <div class="app-card" data-district="ВАО">
+          <span>Кузнецов К.К. | 77:01:0000000:444 | ВАО</span>
+          <a href="application_details.html" class="btn-details">Подробнее</a>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

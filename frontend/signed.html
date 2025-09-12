@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Подписанные документы</title>
+  <link rel="stylesheet" href="signed.css">
+</head>
+<body>
+  <div class="page">
+    <!-- Шапка -->
+    <div class="header">
+      <nav class="tabs">
+        <a href="applications.html">Все заявления</a>
+        <a href="conclusion.html">Заключения комиссии</a>
+        <a href="signed.html" class="active">Подписанные документы</a>
+      </nav>
+      <div class="profile-link">
+        <a href="profile.html">🔔 Личный кабинет</a>
+      </div>
+    </div>
+
+    <!-- Поиск -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Введите название или дату">
+      <button id="searchBtn">Поиск</button>
+    </div>
+
+    <!-- Счётчик -->
+    <div class="counter">
+      Всего: <span id="totalCount">0</span> | Найдено: <span id="foundCount">0</span> <span id="word">документов</span>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="content">
+      <!-- Фильтры -->
+      <aside class="filters">
+        <h3>Фильтр</h3>
+        <div class="filter-section">
+          <label for="docType">Тип документа</label>
+          <select id="docType">
+            <option value="">Все</option>
+            <option value="Акт">Акты</option>
+            <option value="Решение">Решения</option>
+            <option value="Протокол">Протоколы</option>
+          </select>
+        </div>
+
+        <div class="filter-section">
+          <label>Дата подписания</label>
+          <label for="dateFrom">от:</label>
+          <input type="date" id="dateFrom">
+          <label for="dateTo">до:</label>
+          <input type="date" id="dateTo">
+        </div>
+
+        <div class="actions-col">
+          <button id="applyFilters" class="btn-primary">Применить</button>
+          <button id="clearFilters" class="btn-ghost">Сбросить</button>
+        </div>
+      </aside>
+
+      <!-- Список документов -->
+      <main class="applications-list" id="docsList">
+        <div class="app-card" data-type="Акт" data-text="Акт обследования дома">
+          <span>Акт обследования дома | 01.09.2025</span>
+          <a href="doc1.pdf" class="download-btn">Скачать</a>
+        </div>
+        <div class="app-card" data-type="Решение" data-text="Решение комиссии">
+          <span>Решение комиссии | 28.08.2025</span>
+          <a href="doc2.pdf" class="download-btn">Скачать</a>
+        </div>
+        <div class="app-card" data-type="Протокол" data-text="Протокол заседания">
+          <span>Протокол заседания | 20.08.2025</span>
+          <a href="doc3.pdf" class="download-btn">Скачать</a>
+        </div>
+        <div class="app-card" data-type="Акт" data-text="Акт проверки коммуникаций">
+          <span>Акт проверки коммуникаций | 15.07.2025</span>
+          <a href="doc4.pdf" class="download-btn">Скачать</a>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchBtn = document.getElementById("searchBtn");
+    const searchInput = document.getElementById("searchInput");
+    const docsList = document.getElementById("docsList");
+    const totalCountEl = document.getElementById("totalCount");
+    const foundCountEl = document.getElementById("foundCount");
+    const wordEl = document.getElementById("word");
+
+    const docCards = Array.from(docsList.querySelectorAll(".app-card"));
+
+    // Всего
+    totalCountEl.textContent = docCards.length;
+
+    function declension(num) {
+      num = Math.abs(num) % 100;
+      const n1 = num % 10;
+      if (num > 10 && num < 20) return "документов";
+      if (n1 > 1 && n1 < 5) return "документа";
+      if (n1 === 1) return "документ";
+      return "документов";
+    }
+
+    function updateCounter(count) {
+      foundCountEl.textContent = count;
+      wordEl.textContent = declension(count);
+    }
+
+    function doSearch() {
+      const query = searchInput.value.trim().toLowerCase();
+      let found = 0;
+
+      docCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(query)) {
+          card.style.display = "flex";
+          found++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      updateCounter(found);
+    }
+
+    searchBtn.addEventListener("click", doSearch);
+    searchInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") doSearch();
+    });
+
+    updateCounter(docCards.length);
+  });
+  </script>
+</body>
+</html>

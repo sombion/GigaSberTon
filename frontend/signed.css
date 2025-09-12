@@ -1,0 +1,168 @@
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6f8;
+  color: #333;
+}
+
+.page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
+
+/* Шапка */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 14px 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.tabs a {
+  margin-right: 24px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.tabs a.active { color: #2f80ed; }
+.tabs a:hover { color: #2f80ed; }
+
+.profile-link a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  background: #2f80ed;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+}
+
+/* Поиск */
+.search-box {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.search-box input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+.search-box button {
+  padding: 10px 16px;
+  background: #2f80ed;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* Счётчик */
+.counter {
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Контент */
+.content {
+  display: flex;
+  gap: 24px;
+}
+
+/* Фильтры */
+.filters {
+  width: 260px;
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  height: fit-content;
+}
+.filter-section {
+  margin-bottom: 16px;
+}
+.filter-section label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.filter-section select,
+.filter-section input {
+  width: 90%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Кнопки фильтров */
+.actions-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+.btn-primary {
+  padding: 10px 16px;
+  background: #2f80ed;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-ghost {
+  padding: 10px 16px;
+  background: #f4f6f8;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Список документов */
+.applications-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+.app-card {
+  background: #fff;
+  padding: 16px 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.download-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #2f80ed;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+.download-btn:hover {
+  background: #2566c7;
+}

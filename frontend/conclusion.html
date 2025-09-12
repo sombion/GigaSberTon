@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Заключение комиссии</title>
+  <link rel="stylesheet" href="conclusion.css" />
+</head>
+<body>
+  <div class="page">
+    <!-- Верхняя панель -->
+    <div class="header">
+      <nav class="tabs">
+        <a href="applications.html">Все заявления</a>
+        <a href="conclusion.html" class="active">Заключения комиссии</a>
+        <a href="signed.html">Подписанные документы</a>
+      </nav>
+      <div class="profile-link">
+        <a href="profile.html">🔔 Личный кабинет</a>
+      </div>
+    </div>
+
+    <!-- Поиск -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Введите ФИО или кадастровый номер" />
+      <button id="searchBtn">Поиск</button>
+    </div>
+
+    <!-- Счётчик -->
+    <div class="counter">
+      Всего: <span id="totalCount">0</span> | Найдено: <span id="foundCount">0</span> <span id="word">заявлений</span>
+    </div>
+
+    <div class="content">
+      <!-- Фильтры -->
+      <aside class="filters">
+        <h3>Фильтр</h3>
+        <div class="dropdown">
+          <button type="button" class="dropbtn" id="districtBtn">Выберите районы ▾</button>
+          <div id="districtDropdown" class="dropdown-content">
+            <input type="text" id="districtSearch" placeholder="Поиск района..." />
+            <div id="districtList">
+              <label><input type="checkbox" name="district" value="ЦАО" /> ЦАО</label>
+              <label><input type="checkbox" name="district" value="ЮЗАО" /> ЮЗАО</label>
+              <label><input type="checkbox" name="district" value="СЗАО" /> СЗАО</label>
+              <label><input type="checkbox" name="district" value="ВАО" /> ВАО</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <label>Дата выезда</label>
+          <p></p>
+          <label for="dateFrom">от:</label>
+          <input type="date" id="dateFrom">
+          <p></p>
+          <label for="dateTo">до:</label>
+          <input type="date" id="dateTo">
+        </div>
+
+        <div class="actions-col">
+          <button id="applyFilters" class="btn-primary">Применить</button>
+          <button id="clearFilters" class="btn-ghost">Сбросить</button>
+        </div>
+      </aside>
+
+      <!-- Список заявлений -->
+      <main class="applications-list" id="applicationsList">
+        <div class="app-card" data-district="ЦАО" data-text="Документ Иванова">
+          <span>Иванов И.И. | 77:01:0000000:111 | ЦАО</span>
+          <button class="sign-btn">Подписать</button>
+        </div>
+        <div class="app-card" data-district="ЮЗАО" data-text="Документ Петрова">
+          <span>Петров П.П. | 77:01:0000000:222 | ЮЗАО</span>
+          <button class="sign-btn">Подписать</button>
+        </div>
+        <div class="app-card" data-district="СЗАО" data-text="Документ Сидорова">
+          <span>Сидоров С.С. | 77:01:0000000:333 | СЗАО</span>
+          <button class="sign-btn">Подписать</button>
+        </div>
+        <div class="app-card" data-district="ВАО" data-text="Документ Кузнецова">
+          <span>Кузнецов К.К. | 77:01:0000000:444 | ВАО</span>
+          <button class="sign-btn">Подписать</button>
+        </div>
+        <div class="app-card" data-district="ЦАО" data-text="Документ Иванова">
+          <span>Иванов И.И. | 77:01:0000000:111 | ЦАО</span>
+          <button class="sign-btn">Подписать</button>
+        </div>
+        <div class="app-card" data-district="ЮЗАО" data-text="Документ Петрова">
+          <span>Петров П.П. | 77:01:0000000:222 | ЮЗАО</span>
+          <button class="sign-btn">Подписать</button>
+        </div>
+        <div class="app-card" data-district="СЗАО" data-text="Документ Сидорова">
+          <span>Сидоров С.С. | 77:01:0000000:333 | СЗАО</span>
+          <button class="sign-btn">Подписать</button>
+        </div>
+        <div class="app-card" data-district="ВАО" data-text="Документ Кузнецова">
+          <span>Кузнецов К.К. | 77:01:0000000:444 | ВАО</span>
+          <button class="sign-btn">Подписать</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Модальное окно -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Документ заявления</h3>
+      <p id="modalText">Текст заявления...</p>
+      <div class="modal-actions">
+        <button id="approveBtn" class="btn-approve">Подписать</button>
+        <button id="rejectBtn" class="btn-ghost">Отклонить</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchBtn = document.getElementById("searchBtn");
+    const searchInput = document.getElementById("searchInput");
+    const applicationsList = document.getElementById("applicationsList");
+    const totalCountEl = document.getElementById("totalCount");
+    const foundCountEl = document.getElementById("foundCount");
+    const wordEl = document.getElementById("word");
+
+    const appCards = Array.from(applicationsList.querySelectorAll(".app-card"));
+
+    // Установим общее количество
+    totalCountEl.textContent = appCards.length;
+
+    // Склонение слова "заявление"
+    function declension(num) {
+      num = Math.abs(num) % 100;
+      const n1 = num % 10;
+      if (num > 10 && num < 20) return "заявлений";
+      if (n1 > 1 && n1 < 5) return "заявления";
+      if (n1 === 1) return "заявление";
+      return "заявлений";
+    }
+
+    function updateCounter(count) {
+      foundCountEl.textContent = count;
+      wordEl.textContent = declension(count);
+    }
+
+    // Поиск
+    function doSearch() {
+      const query = searchInput.value.trim().toLowerCase();
+      let found = 0;
+
+      appCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(query)) {
+          card.style.display = "flex";
+          found++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      updateCounter(found);
+    }
+
+    searchBtn.addEventListener("click", doSearch);
+
+    // Поиск по Enter
+    searchInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        doSearch();
+      }
+    });
+
+    // При загрузке страницы
+    updateCounter(appCards.length);
+
+    // Модалка предпросмотра
+    const modal = document.getElementById("modal");
+    const modalText = document.getElementById("modalText");
+    const closeBtn = document.querySelector(".close");
+
+    document.querySelectorAll(".sign-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const appCard = e.target.closest(".app-card");
+        modalText.textContent = appCard.dataset.text;
+        modal.style.display = "flex";
+      });
+    });
+
+    closeBtn.addEventListener("click", () => modal.style.display = "none");
+    window.addEventListener("click", e => { 
+      if (e.target === modal) modal.style.display = "none"; 
+    });
+  });
+  </script>
+</body>
+</html>
