@@ -1,0 +1,195 @@
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6f8;
+  color: #333;
+}
+
+.page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
+
+/* Верхняя панель */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+/* Навигация сверху */
+.tabs {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 14px 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.tabs a {
+  margin-right: 24px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.tabs a:last-child {
+  margin-right: 0;
+}
+
+.tabs a:hover {
+  color: #2f80ed;
+}
+
+.tabs a.active {
+  color: #2f80ed;
+}
+
+/* Личный кабинет */
+.profile-link a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  background: #2f80ed;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.profile-link a:hover {
+  background: #2566c7;
+  transform: translateY(-1px);
+}
+
+/* Контейнер с меню и формой */
+.content {
+  display: flex;
+  gap: 24px;
+}
+
+/* Боковое меню */
+.sidebar {
+  width: 240px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.menu-btn {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #f4f6f8;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.menu-btn:hover {
+  background: #e8eefc;
+  color: #2f80ed;
+}
+
+.menu-btn.active {
+  background: #2f80ed;
+  color: #fff;
+}
+
+.menu-btn.logout {
+  background: #b62525;
+  color: #fff;
+}
+
+.menu-btn.logout:hover {
+  background: rgb(189, 63, 63);
+}
+
+/* Контейнер формы */
+.form-container {
+  flex: 1;
+  background: #fff;
+  padding: 32px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #2f80ed;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* Общая информация */
+.info-section p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Поля формы */
+label {
+  display: block;
+  margin: 14px 0 6px;
+  font-weight: 600;
+  color: #444;
+}
+
+input,
+button {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  border-color: #2f80ed;
+  box-shadow: 0 0 8px rgba(47,128,237,0.25);
+  outline: none;
+}
+
+/* Кнопки */
+button {
+  background: #2f80ed;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.1s;
+}
+
+button:hover {
+  background: #1c60b3;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* Кнопка для смены пароля */
+.save-password-btn {
+  background: #27ae60;
+}
+
+.save-password-btn:hover {
+  background: #1e8449;
+}

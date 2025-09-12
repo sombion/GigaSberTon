@@ -1,0 +1,236 @@
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+/* Контейнер шапки */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* Навигация */
+.tabs {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 14px 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.tabs a {
+  margin-right: 24px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.tabs a:last-child {
+  margin-right: 0;
+}
+
+.tabs a:hover {
+  color: #2f80ed;
+}
+
+/* Личный кабинет */
+.profile-link a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  background: #2f80ed;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.profile-link a:hover {
+  background: #2566c7;
+  transform: translateY(-1px);
+}
+
+/* Поиск */
+.search-box {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.search-box input:focus {
+  border-color: #2f80ed;
+  box-shadow: 0 0 0 3px rgba(47,128,237,0.15);
+  outline: none;
+}
+
+.search-box button {
+  padding: 10px 16px;
+  background: #2f80ed;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.search-box button:hover {
+  background: #2566c7;
+  transform: translateY(-1px);
+}
+
+/* Две колонки */
+.split-content {
+  display: flex;
+  gap: 24px;
+}
+
+.left-col,
+.right-col {
+  flex: 1;
+}
+
+/* Карточки */
+.card {
+  background: #fff;
+  padding: 18px 22px;
+  margin-bottom: 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #2f80ed;
+  font-size: 18px;
+}
+
+/* Документ */
+.right-col iframe {
+  width: 100%;
+  height: 520px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+.doc-actions {
+  text-align: right;
+  margin-bottom: 12px;
+}
+
+.btn-download {
+  padding: 10px 16px;
+  background: #2f80ed;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-download:hover {
+  background: #2566c7;
+  transform: translateY(-1px);
+}
+
+/* Метки */
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.badge.warn {
+  background: #fff4e6;
+  color: #f2994a;
+}
+
+/* Кнопки */
+.actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.actions .btn,
+.actions button {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.actions .btn {
+  background: #2f80ed;
+  color: #fff;
+}
+
+.actions .btn:hover {
+  background: #2566c7;
+  transform: translateY(-1px);
+}
+
+.actions button {
+  background: #27ae60;
+  color: #fff;
+}
+
+.actions button:hover {
+  background: #1f8e4e;
+  transform: translateY(-1px);
+}
+
+.actions .ghost {
+  background: transparent;
+  border: 1px solid #ccc;
+  color: #555;
+}
+
+.actions .ghost:hover {
+  border-color: #2f80ed;
+  color: #2f80ed;
+}
+
+.actions .del {
+  background: #b8101e;
+  border: 1px solid #8b0d18;
+  color: #ffffff;
+}
+
+.actions .del:hover {
+  background: #990c18;
+  transform: translateY(-1px);
+}

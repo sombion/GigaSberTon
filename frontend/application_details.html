@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Подробнее о заявлении</title>
+  <link rel="stylesheet" href="application_details.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <!-- Верхняя часть -->
+    <div class="header">
+      <!-- Навигация -->
+      <nav class="tabs">
+        <a href="applications.html">Все заявления</a>
+        <a href="conclusion.html">Заключения комиссии</a>
+        <a href="signed.html">Подписанные документы</a>
+      </nav>
+
+      <!-- Личный кабинет -->
+      <div class="profile-link">
+        <a href="profile.html">🔔 Личный кабинет</a>
+      </div>
+    </div>
+
+    <!-- Основное содержимое -->
+    <div class="split-content">
+      <!-- Левая колонка -->
+      <div class="left-col">
+        <h1>Заявление №12345</h1>
+
+        <div class="card">
+          <h3>Основные данные</h3>
+          <p><strong>ФИО:</strong> Иванов Иван Иванович</p>
+          <p><strong>Телефон:</strong> +7 (999) 123-45-67</p>
+          <p><strong>Email:</strong> user@example.com</p>
+          <p><strong>Адрес:</strong> Б.Хмельницкого 19</p>
+          <p><strong>Кадастровый номер:</strong> 77:01:0000000:1234</p>
+          <p><strong>GPS:</strong> 55.7558, 37.6173</p>
+        </div>
+
+        <div class="card">
+          <h3>Статус<span class="badge warn">На проверке</span>
+          </h3>
+        </div>
+
+        <div class="actions">
+          <button id="assignVisit">Назначить выезд</button>
+          <button id="deleteApp" class="del">Удалить</button>
+          <a href="applications.html" class="btn ghost">Вернуться</a>
+        </div>
+      </div>
+
+      <!-- Правая колонка -->
+      <div class="right-col">
+        <div class="card">
+          <h3>Документ</h3>
+          <iframe src="egpn_file.pdf" title="Выписка ЕГРН"></iframe>
+          <div class="doc-actions">
+            <a href="egpn_file.pdf" download class="btn-download">Скачать PDF</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
