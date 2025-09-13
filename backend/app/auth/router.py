@@ -12,8 +12,8 @@ async def me_api(current_user=Depends(get_current_user)):
     return current_user
 
 
-@router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register_api(payload: RegisterRequest, response: Response) -> Any:
+@router.post("/register")
+async def register_api(payload: RegisterRequest, response: Response):
     return await register(response, payload.login, payload.fio, payload.email, payload.password)
 
 

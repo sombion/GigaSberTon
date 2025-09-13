@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy import delete, func, insert, select, update
 from app.dao.base import BaseDAO
 from app.database import async_session_maker
@@ -33,12 +34,23 @@ class NotificationDAO(BaseDAO):
             return result.scalar()
 
     @classmethod
+    async def read_all(cls, user_id: int):
+        async with async_session_maker() as session:
+            stmt = (
+                update(cls.model)
+                .where(cls.model.user_id == user_id, cls.model.read == False)
+                .values(read=True)
+            )
+            await session.execute(stmt)
+            await session.commit()
+
+    @classmethod
     async def my_count(cls, user_id: int):
         async with async_session_maker() as session:
             query = (
                 select(func.count(cls.model.user_id))
                 .select_from(cls.model)
-                .where(cls.model.user_id == user_id)
+                .where(cls.model.user_id == user_id, cls.model.read == False)
             )
             result = await session.execute(query)
             return result.scalar()

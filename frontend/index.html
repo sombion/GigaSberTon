@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="filter/filter.css">
+</head>
+<body>
+    <div class="page"> 
+        <div class="content">
+            <aside class="filters">
+                <h3>Фильтр</h3>
+                <div class="dropdown">
+                <button type="button" class="dropbtn" id="districtBtn">
+                    Выберите районы ▾
+                </button>
+                <div id="districtDropdown" class="dropdown-content">
+                    <input type="text" id="districtSearch" placeholder="Поиск района..." />
+                    <div id="districtList">
+                    <label><input type="checkbox" name="district" value="ЦАО" /> ЦАО</label>
+                    <label><input type="checkbox" name="district" value="ЮЗАО" /> ЮЗАО</label>
+                    <label><input type="checkbox" name="district" value="СЗАО" /> СЗАО</label>
+                    <label><input type="checkbox" name="district" value="ВАО" /> ВАО</label>
+                    <label><input type="checkbox" name="district" value="Советский" /> Советский</label>
+                    <label><input type="checkbox" name="district" value="Левобережный" /> Левобережный</label>
+                    </div>
+                </div>
+                </div>
+
+                <div class="filter-section">
+                <label>Дата выезда</label>
+                <p></p>
+                <label for="dateFrom">от:</label>
+                <input type="date" id="dateFrom">
+                <p></p>
+                <label for="dateTo">до:</label>
+                <input type="date" id="dateTo">
+                </div>
+
+                <div class="field">
+                <label><input type="checkbox" id="filterVisit" /> Назначен выезд</label>
+                </div>
+
+                <div class="actions-col">
+                <button id="applyFilters" class="btn-primary">Применить</button>
+                <button id="clearFilters" class="btn-ghost">Сбросить</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <script src="filter/filter.js"></script>
+</body>
+</html>

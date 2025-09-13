@@ -1,5 +1,7 @@
 import enum
 from datetime import datetime
+
+from sqlalchemy import DateTime
 from app.database import Base
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -27,7 +29,8 @@ class Applications(Base):
 
     # Данные объекта
     cadastral_number: Mapped[str] = mapped_column(index=True)
-    region: Mapped[str]
+    address: Mapped[str]
+    street: Mapped[str]
     gps_lat: Mapped[float]
     gps_lng: Mapped[float]
 
@@ -38,4 +41,6 @@ class Applications(Base):
     status: Mapped[ApplicationStatus] = mapped_column(
         default=ApplicationStatus.ACCEPTED
     )
-    departure_date: Mapped[datetime] = mapped_column(nullable=True, default=None)
+    departure_date: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=True, default=None
+    )
