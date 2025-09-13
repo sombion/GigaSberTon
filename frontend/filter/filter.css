@@ -1,0 +1,102 @@
+/* Блок фильтра */
+.filters {
+  width: 260px;
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  height: fit-content;
+}
+
+/* Дропдаун */
+.dropdown {
+  position: relative;
+  margin-bottom: 16px;
+}
+.dropbtn {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 500;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.dropbtn:hover {
+  border-color: #2f80ed;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: #fff;
+  min-width: 240px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  padding: 12px;
+  z-index: 10;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.dropdown-content input[type="text"] {
+  width: 90%;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.dropdown-content label {
+  display: block;
+  margin-bottom: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.dropdown.show .dropdown-content {
+  display: block;
+}
+
+/* Секция выбора дат */
+.filter-section {
+  margin-bottom: 16px;
+}
+.filter-section label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.filter-section select,
+.filter-section input {
+  width: 90%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Кнопки фильтров */
+.actions-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+.btn-primary {
+  padding: 10px 16px;
+  background: #2f80ed;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-ghost {
+  padding: 10px 16px;
+  background: #f4f6f8;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}

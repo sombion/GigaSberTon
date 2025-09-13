@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: e30ba8913542
+Revision ID: 5030b730b585
 Revises: 
-Create Date: 2025-09-09 22:21:25.113063
+Create Date: 2025-09-13 20:02:40.097250
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'e30ba8913542'
+revision: str = '5030b730b585'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,7 +28,8 @@ def upgrade() -> None:
     sa.Column('phone', sa.String(), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
     sa.Column('cadastral_number', sa.String(), nullable=False),
-    sa.Column('region', sa.String(), nullable=False),
+    sa.Column('address', sa.String(), nullable=False),
+    sa.Column('street', sa.String(), nullable=False),
     sa.Column('gps_lat', sa.Float(), nullable=False),
     sa.Column('gps_lng', sa.Float(), nullable=False),
     sa.Column('file_url', sa.String(), nullable=True),
@@ -60,11 +61,9 @@ def upgrade() -> None:
     op.create_table('notifications',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('application_id', sa.Integer(), nullable=False),
-    sa.Column('message', sa.String(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('text', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False),
     sa.Column('read', sa.Boolean(), nullable=False),
-    sa.ForeignKeyConstraint(['application_id'], ['applications.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -84,6 +83,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('users_id', sa.Integer(), nullable=False),
     sa.Column('conclusion_id', sa.Integer(), nullable=False),
+    sa.Column('signed', sa.Boolean(), nullable=False),
     sa.ForeignKeyConstraint(['conclusion_id'], ['conclusion.id'], ),
     sa.ForeignKeyConstraint(['users_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

@@ -9,3 +9,4 @@ class Signature(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
     users_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     conclusion_id: Mapped[int] = mapped_column(ForeignKey("conclusion.id"))
+    signed: Mapped[bool] = mapped_column(default=False)

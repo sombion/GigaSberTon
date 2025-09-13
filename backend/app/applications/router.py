@@ -5,7 +5,7 @@ from fastapi.responses import FileResponse
 
 from app.applications.dao import ApplicationsDAO
 from app.applications.models import ApplicationStatus
-from app.applications.schemas import SApplicationsDeparture
+from app.applications.schemas import SApplicationsDeparture, SCreateApplications
 from app.applications.service import (
     all_applications,
     create_applications,
@@ -19,33 +19,33 @@ from app.applications.service import (
 from app.auth.dependency import get_current_user
 from app.auth.models import Users
 
-router = APIRouter(prefix="/applications", tags=["API applications"])
+router = APIRouter(prefix="/api/applications", tags=["API applications"])
 
 
 @router.post("/create")
-async def create_applications_api(
-    file: UploadFile = File(...),
-    tg_id: int = Form(...),
-    fio: str = Form(...),
-    phone: str = Form(...),
-    email: str = Form(...),
-    cadastral_number: str = Form(...),
-    region: str = Form(...),
-    gps_lat: float = Form(...),
-    gps_lng: float = Form(...),
-):
+async def create_applications_api(applications_data: SCreateApplications):
     return await create_applications(
-        file,
-        tg_id,
-        fio,
-        phone,
-        email,
-        cadastral_number,
-        region,
-        gps_lat,
-        gps_lng,
+        applications_data.tg_id,
+        applications_data.fio,
+        applications_data.phone,
+        applications_data.email,
+        applications_data.cadastral_number,
+        applications_data.address,
+        applications_data.gps_lat,
+        applications_data.gps_lng,
     )
 
+# Проверить (реализовать уведомления, изменение даты и статуса)
+# Для какого-то заявления уже есть выезд
+
+@router.patch("/departure")
+async def update_departure_api(
+    application_data: SApplicationsDeparture,
+    current_user: Users = Depends(get_current_user),
+):
+    return await update_departure(
+        application_data.applications_id, application_data.departure_date
+    )
 
 @router.delete("/delete/{id}")
 async def delete_applications_api(id: int):
@@ -69,16 +69,17 @@ async def search_applications_api(text: str):
 
 @router.get("/filter")
 async def filter_applications_api(
-    region: str | None = Query(None),
-    departure_date: datetime | None = Query(None),
+    street: str | None = Query(None),
+    date_from: datetime | None = Query(None),
+    date_to: datetime | None = Query(None),
     is_departure: bool | None = Query(None),
 ):
-    return await filter_applications(region, departure_date, is_departure)
+    return await filter_applications(street, date_from, date_to, is_departure)
 
 
-@router.get("/region")
-async def region_api(search: str | None = Query(None)):
-    return {"regions": await ApplicationsDAO.get_regions(search)}
+@router.get("/street")
+async def addres_api(search: str | None = Query(None)):
+    return {"streets": await ApplicationsDAO.get_street(search)}
 
 
 @router.get("/download/{id}")
@@ -94,14 +95,3 @@ async def download_application_api(id: int):
 @router.get("/view/{id}")
 async def view_application_api(id: int):
     return await view_applications(id)
-
-
-# Проверить (реализовать уведомления, изменение даты и статуса)
-@router.patch("/departure")
-async def update_departure_api(
-    application_data: SApplicationsDeparture,
-    current_user: Users = Depends(get_current_user),
-):
-    return await update_departure(
-        application_data.applications_id, application_data.departure_date
-    )

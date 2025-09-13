@@ -1,23 +1,34 @@
 from datetime import datetime
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
 from fastapi.responses import FileResponse
 
+from app.auth.dependency import get_current_user
+from app.auth.models import Users
 from app.conclusion.dao import ConclusionDAO
+from app.conclusion.schemas import SCreateConclusion
 from app.conclusion.service import (
     all_conclusions,
+    create_conclusions,
     download_conclusions,
     filter_conclusions,
     search_conclusions,
     view_conclusions,
 )
 
-router = APIRouter(prefix="/conclusion", tags=["API conclusion"])
+router = APIRouter(prefix="/api/conclusion", tags=["API conclusion"])
 
 
-# Создать create
 @router.post("/create")
-async def create_conclusions_api():
-    return await ConclusionDAO.add()
+async def create_conclusions_api(conclusion_data: SCreateConclusion):
+    return await create_conclusions(
+        conclusion_data.applications_id,
+        conclusion_data.date,
+        conclusion_data.chairman_id,
+        conclusion_data.members_id,
+        conclusion_data.justification,
+        conclusion_data.documents,
+        conclusion_data.conclusion,
+    )
 
 
 # Создать edit
@@ -27,7 +38,7 @@ async def update_conclusions_api():
 
 
 @router.get("/all")
-async def all_conclusions_api(id: int):
+async def all_conclusions_api():
     return await all_conclusions()
 
 
@@ -43,9 +54,13 @@ async def search_conclusions_api(text: str):
 
 @router.get("/filter")
 async def filter_conclusions_api(
-    region: str | None = Query(None), departure_date: datetime | None = Query(None)
+    street: str | None = Query(None),
+    date_from: datetime | None = Query(None),
+    date_to: datetime | None = Query(None),
+    signed: bool | None = Query(None),
+    current_user: Users = Depends(get_current_user)
 ):
-    return await filter_conclusions(region, departure_date)
+    return await filter_conclusions(street, date_from, date_to, signed, current_user.id)
 
 
 @router.get("/download/{id}")
