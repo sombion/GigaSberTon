@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Создание заявления комиссии</title>
+
+  <!-- Стили -->
+  <link rel="stylesheet" href="conclusion-create.css">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="page"> 
+    <!-- Верхняя панель -->
+    <div class="header">
+      <nav class="tabs">
+        <a href="../applications/applications.html" class="active">Все заявления</a>
+        <a href="../conclusion/conclusion.html">Заключения комиссии</a>
+        <a href="../signed/signed.html">Подписанные документы</a>
+      </nav>
+  <div class="right-controls">
+    <div class="notifications">
+      <a href="../notifications/notifications.html" class="bell">
+        🔔
+        <span class="badge">3</span>
+      </a>
+    </div>
+    <div class="profile-link">
+      <a href="../profile/profile.html">Личный кабинет</a>
+    </div>
+  </div>
+</div>
+
+    <!-- Форма -->
+    <div class="form-container">
+      <h1>Создание заявления комиссии</h1>
+      <form>
+        <div class="form-grid">
+
+          <!-- Выбор заявления -->
+          <div class="form-group full-width">
+            <label for="statement">Выбор заявления</label>
+            <select id="statement" name="statement">
+              <option value="">Выберите заявление</option>
+              <option>Заявление 1</option>
+              <option>Заявление 2</option>
+              <option>Заявление 3</option>
+            </select>
+          </div>
+
+          <!-- Дата создания -->
+          <div class="form-group-data">
+            <label for="date">Дата создания</label>
+            <input type="date" id="date" name="date">
+          </div>
+
+          <!-- Председатель -->
+          <div class="form-group">
+            <label for="chairman">Председатель</label>
+            <select id="chairman" name="chairman">
+              <option value="">Выберите председателя</option>
+              <option>Иванов И.И.</option>
+              <option>Петров П.П.</option>
+              <option>Сидоров С.С.</option>
+            </select>
+          </div>
+
+          <!-- Члены комиссии -->
+          <div class="form-group full-width">
+            <label for="members">Члены комиссии</label>
+            <select id="members" name="members[]" multiple>
+              <option>Смирнов А.А.</option>
+              <option>Кузнецов В.В.</option>
+              <option>Попов Д.Д.</option>
+              <option>Егоров М.М.</option>
+            </select>
+          </div>
+
+          <!-- По результатам рассмотренных документов -->
+          <div class="form-group full-width">
+            <label for="documents">По результатам рассмотренных документов</label>
+            <textarea id="documents" name="documents" rows="8"></textarea>
+          </div>
+
+          <!-- Результат обследования -->
+          <div class="form-group full-width">
+            <label for="inspection">Результат обследования</label>
+            <textarea id="inspection" name="inspection" rows="3"></textarea>
+          </div>
+
+          <!-- Заключение комиссии -->
+          <div class="form-group full-width">
+            <label for="conclusion">Комиссия приняла заключение о:</label>
+            <textarea id="conclusion" name="conclusion" rows="3"></textarea>
+          </div>
+
+        </div>
+
+        <!-- Кнопки -->
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="history.back()">Назад</button>
+          <button type="submit" class="btn-primary">Создать</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Подключение JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      $('#members').select2({
+        placeholder: "Выберите членов комиссии"
+      });
+
+      // Автоматическая установка сегодняшней даты
+      const dateInput = document.getElementById("date");
+      if (dateInput) {
+        let today = new Date().toISOString().split("T")[0];
+        dateInput.value = today;
+      }
+    });
+  </script>
+</body>
+</html>
