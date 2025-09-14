@@ -1,0 +1,209 @@
+/* Общие стили */
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6f8;
+  color: #333;
+}
+
+/* Контейнер */
+.page {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Верхняя панель */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* Навигация */
+.tabs {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 14px 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.tabs a {
+  margin-right: 24px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.tabs a:last-child {
+  margin-right: 0;
+}
+
+.tabs a:hover {
+  color: #2f80ed;
+}
+
+.tabs a.active {
+  color: #2f80ed;
+}
+
+/* Блок уведомлений */
+.notifications {
+  position: relative;
+}
+
+.bell {
+  margin-right: 10px;  
+  position: relative;
+  font-size: 22px;
+  text-decoration: none;
+  color: #2f80ed;
+}
+
+.bell:hover {
+  color: #2566c7;
+}
+
+/* Группа справа */
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* расстояние между колокольчиком и кнопкой */
+}
+
+/* Красный кружок */
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #e63946;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Личный кабинет */
+.profile-link a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  background: #2f80ed;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.profile-link a:hover {
+  background: #2566c7;
+  transform: translateY(-1px);
+}
+
+/* Форма */
+.form-container {
+  background: #fff;
+  padding: 13px 22px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2f80ed;
+  font-size: 22px;
+}
+
+/* Сетка */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+  margin-bottom: 20px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #444;
+}
+.form-group input,
+.form-group select {
+  padding: 6px 10px;
+  height: 34px; /* уменьшает высоту */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.form-group textarea{
+    padding: 6px 10px;
+    max-width: 935px;
+    min-width: 935px;
+  height: 34px; /* уменьшает высоту */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 17px;
+}
+
+.form-group-data input{
+padding: 6px 10px;
+  height: 23px;
+  width: 390px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2f80ed;
+  box-shadow: 0 0 0 2px rgba(47,128,237,0.15);
+  outline: none;
+}
+
+/* Для многострочных полей */
+.full-width {
+  grid-column: span 2;
+}
+
+/* Кнопки */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+.btn-primary {
+  padding: 10px 18px;
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: #1e8c4d;
+}
+.btn-secondary {
+  padding: 10px 18px;
+  background: #f4f6f8;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+}

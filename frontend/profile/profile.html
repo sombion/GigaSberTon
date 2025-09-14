@@ -4,52 +4,29 @@
   <meta charset="UTF-8">
   <title>Настройки профиля</title>
   <link rel="stylesheet" href="profile.css">
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      const menuButtons = document.querySelectorAll(".menu-btn");
-      const sections = {
-        info: document.querySelector(".info-section"),
-        edit: document.querySelector(".edit-section"),
-        password: document.querySelector(".password-section"),
-      };
-
-      menuButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          // Активная кнопка
-          menuButtons.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-
-          // Скрываем все секции
-          Object.values(sections).forEach((sec) => (sec.style.display = "none"));
-
-          // Показываем нужную секциюF
-          if (btn.dataset.section === "info") sections.info.style.display = "block";
-          if (btn.dataset.section === "edit") sections.edit.style.display = "block";
-          if (btn.dataset.section === "password") sections.password.style.display = "block";
-          if (btn.dataset.section === "login") {
-            window.location.href = "login.html";
-          }
-        });
-      });
-    });
-  </script>
+  <script defer src="script.js"></script>
 </head>
 <body>
   <div class="page">
     <!-- Верхняя панель -->
     <div class="header">
-      <!-- Навигация -->
       <nav class="tabs">
-        <a href="applications.html">Все заявления</a>
-        <a href="conclusion.html">Заключения комиссии</a>
-        <a href="signed.html">Подписанные документы</a>
+        <a href="../applications/applications.html">Все заявления</a>
+        <a href="../conclusion/conclusion.html">Заключения комиссии</a>
+        <a href="../signed/signed.html">Подписанные документы</a>
       </nav>
-
-      <!-- Личный кабинет -->
-      <div class="profile-link">
-        <a href="profile.html" class="active">🔔 Личный кабинет</a>
-      </div>
+  <div class="right-controls">
+    <div class="notifications">
+      <a href="../notifications/notifications.html" class="bell">
+        🔔
+        <span class="badge">3</span>
+      </a>
     </div>
+    <div class="profile-link">
+      <a href="../profile/profile.html">Личный кабинет</a>
+    </div>
+  </div>
+</div>
 
     <!-- Основной контент -->
     <div class="content">
@@ -76,10 +53,8 @@
         <div class="edit-section" style="display: none;">
           <label for="name">ФИО</label>
           <input type="text" id="name" placeholder="Введите ФИО">
-
           <label for="email">Email</label>
           <input type="email" id="email" placeholder="Введите email">
-
           <button type="button">Сохранить профиль</button>
         </div>
 
@@ -87,15 +62,25 @@
         <div class="password-section" style="display: none;">
           <label for="old-password">Старый пароль</label>
           <input type="password" id="old-password" placeholder="Введите старый пароль">
-
           <label for="new-password">Новый пароль</label>
           <input type="password" id="new-password" placeholder="Введите новый пароль">
-
           <label for="confirm-password">Подтвердите новый пароль</label>
           <input type="password" id="confirm-password" placeholder="Повторите новый пароль">
-
           <button type="button" class="save-password-btn">Сохранить пароль</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно -->
+  <div class="modal-overlay" id="delete-modal">
+    <div class="modal">
+      <h2>Подтверждение удаления</h2>
+      <p>Введите пароль для подтверждения удаления аккаунта:</p>
+      <input type="password" id="delete-password" placeholder="Ваш пароль">
+      <div class="modal-actions">
+        <button class="btn-cancel">Отмена</button>
+        <button class="btn-confirm">Удалить</button>
       </div>
     </div>
   </div>

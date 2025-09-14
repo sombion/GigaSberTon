@@ -1,0 +1,168 @@
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6f8;
+  color: #333;
+}
+
+.page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
+
+/* Верхняя панель */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* Навигация */
+.tabs {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 14px 22px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.tabs a {
+  margin-right: 24px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  font-size: 15px;
+}
+.tabs a:last-child { margin-right: 0; }
+.tabs a:hover { color: #2f80ed; }
+.tabs a.active { color: #2f80ed; }
+
+/* Группа справа */
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* расстояние между колокольчиком и кнопкой */
+}
+
+.bell.active {
+  background: #e3f2fd;
+  border-radius: 50%;
+  padding: 6px;
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.3);
+}
+
+/* Блок уведомлений */
+.notifications {
+  position: relative;
+}
+
+.bell {
+  margin-right: 10px;  
+  position: relative;
+  font-size: 22px;
+  text-decoration: none;
+  color: #2f80ed;
+}
+
+.bell:hover {
+  color: #2566c7;
+}
+
+/* Красный кружок */
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #e63946;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Личный кабинет */
+.profile-link a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  background: #2f80ed;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+}
+
+/* Заголовок уведомлений */
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.mark-all-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #2f80ed;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mark-all-btn:hover { background: #2566c7; }
+
+/* Счетчик */
+.counter {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Список уведомлений */
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 520px;   /* ограничение по высоте */
+  overflow-y: auto;    /* прокрутка */
+  padding-right: 6px;
+}
+.notification-card {
+  background: #fff;
+  padding: 16px 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notification-card.read {
+  background: #eef3f8;
+  color: #777;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+}
+.btn-read {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #27ae60;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-read:hover { background: #1f8e4d; }
+.btn-delete {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #b8101e;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-delete:hover { background: #990c18; }

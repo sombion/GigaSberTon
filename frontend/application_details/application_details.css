@@ -46,6 +46,47 @@ body {
   color: #2f80ed;
 }
 
+
+/* Группа справа */
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* расстояние между колокольчиком и кнопкой */
+}
+
+/* Блок уведомлений */
+.notifications {
+  position: relative;
+}
+
+.bell {
+  margin-right: 10px;  
+  position: relative;
+  font-size: 22px;
+  text-decoration: none;
+  color: #2f80ed;
+}
+
+.bell:hover {
+  color: #2566c7;
+}
+
+/* Красный кружок */
+.badget {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #e63946;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+
+
 /* Личный кабинет */
 .profile-link a {
   text-decoration: none;
