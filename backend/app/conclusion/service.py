@@ -28,13 +28,19 @@ async def create_conclusions(
 ):
     chairman_data: Users = await UsersDAO.find_by_id(chairman_id)
     chairman_fio = chairman_data.fio
-    chairman = f"{chairman_fio.split(" ")[0]} {chairman_fio.split(" ")[1][0]}. {chairman_fio.split(" ")[2][0]}."
+    try:
+        chairman = f"{chairman_fio.split(' ')[0]} {chairman_fio.split(' ')[1][0]}. {chairman_fio.split(' ')[2][0]}."
+    except Exception as e:
+        raise {"detail": "Неверный формат имени"}
 
     members = []
     for member_id in members_id:
         member_data: Users = await UsersDAO.find_by_id(member_id)
         member_fio = member_data.fio
-        member = f"{member_fio.split(" ")[0]} {member_fio.split(" ")[1][0]}. {member_fio.split(" ")[2][0]}."
+        try:
+            member = f"{member_fio.split(' ')[0]} {member_fio.split(' ')[1][0]}. {member_fio.split(' ')[2][0]}."
+        except Exception as e:
+            raise {"detail": "Неверный формат имени"}
         members.append(member)
 
     applications_data: Applications = await ApplicationsDAO.find_by_id(applications_id)
@@ -44,7 +50,7 @@ async def create_conclusions(
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     safe_filename = f"{timestamp}.docx"
-    upload_dir = "doc/application"
+    upload_dir = "doc/conclusion"
     file_path = os.path.join(upload_dir, safe_filename)
 
     await fill_statement(

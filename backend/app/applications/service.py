@@ -31,10 +31,15 @@ async def create_applications(
 
     file_path = os.path.join(upload_dir, safe_filename)
 
+    try:
+        applicant = f"{fio.split(' ')[0]} {fio.split(' ')[1][0]}. {fio.split(' ')[2][0]}."
+    except Exception as e:
+        raise {"detail": "Неверный формат имени"}
+
     # Создаем шаблон
     applicant_statement(
         output_path=file_path,
-        applicant=f"{fio.split(" ")[0]} {fio.split(" ")[1][0]}. {fio.split(" ")[2][0]}.",
+        applicant=applicant,
         email=email,
         phone_number=phone,
         address=address,
@@ -50,6 +55,7 @@ async def create_applications(
         email=email,
         cadastral_number=cadastral_number,
         street=street,
+        address=address,
         file_url=file_path,
     )
 
