@@ -15,6 +15,7 @@ from app.conclusion.models import Conclusion
 from app.notification.dao import NotificationDAO
 from app.notification.service import make_notification
 from app.service.base import convert_to_pdf
+from app.signature.dao import SignatureDAO
 
 
 async def create_conclusions(
@@ -27,6 +28,8 @@ async def create_conclusions(
     conclusion: str,
 ):
     chairman_data: Users = await UsersDAO.find_by_id(chairman_id)
+    if not chairman_data:
+        raise {"detail": "Пользователь не найден"}
     chairman_fio = chairman_data.fio
     try:
         chairman = f"{chairman_fio.split(' ')[0]} {chairman_fio.split(' ')[1][0]}. {chairman_fio.split(' ')[2][0]}."
@@ -35,7 +38,9 @@ async def create_conclusions(
 
     members = []
     for member_id in members_id:
-        member_data: Users = await UsersDAO.find_by_id(member_id)
+        member_data: Users = await UsersDAO.find_by_id(int(member_id))
+        if not member_data:
+            raise {"detail": "Пользователь не найден"}
         member_fio = member_data.fio
         try:
             member = f"{member_fio.split(' ')[0]} {member_fio.split(' ')[1][0]}. {member_fio.split(' ')[2][0]}."
@@ -44,6 +49,8 @@ async def create_conclusions(
         members.append(member)
 
     applications_data: Applications = await ApplicationsDAO.find_by_id(applications_id)
+    if not applications_data:
+        raise {"detail": "Заявление не найдено"}
 
     if await ConclusionDAO.find_one_or_none(applications_id=applications_id):
         raise {"На данное заявление уже составленно заключение"}
@@ -55,8 +62,8 @@ async def create_conclusions(
 
     await fill_statement(
         file_path,
-        str(datetime),
-        applications_data.street,
+        str(datetime.now().strftime("%d.%m.%Y")),
+        applications_data.address,
         "Администрацией Центрального района г. Воронежа, решение №123 от 01.09.2025",
         chairman,
         members,
@@ -81,11 +88,13 @@ async def create_conclusions(
         user_id=chairman_id,
         text=f"Заявление №{conclusion_id} - вас назначили председателем комиссии",
     )
+    await SignatureDAO.add(chairman_id, conclusion_id)
     for member_id in members_id:
         await NotificationDAO.add(
-            user_id=member_id,
+            user_id=int(member_id),
             text=f"Заявление №{conclusion_id} - вас назначили членом комиссии",
         )
+        await SignatureDAO.add(int(member_id), conclusion_id)
     await make_notification(
         tg_id=applications_data.tg_id,
         text=f"На ваше заявление №{conclusion_id} создано заключение комиссии",
@@ -95,9 +104,6 @@ async def create_conclusions(
 
 
 async def edit_conclusions(): ...
-
-
-# Обновление ворд файла и пдф
 
 
 async def all_conclusions():
@@ -121,19 +127,22 @@ async def filter_conclusions(
     return {"count": len(conclusion_data), "conclusions": conclusion_data}
 
 
-async def view_conclusions():
+async def view_conclusions(id: int):
     conclusion_data = await ConclusionDAO.find_by_id(id)
     if not conclusion_data:
         return {"detail": "Файл не найден"}
-    file_path = conclusion_data.file_url
+    file_path = f"{(conclusion_data.file_url).split('.')[0]}.pdf"
     ext = os.path.splitext(file_path)[1].lower()
-    media_type, _ = mimetypes.guess_type(file_path)
-    if not media_type:
-        media_type = "application/octet-stream"
+    try:
+        media_type, _ = mimetypes.guess_type(file_path)
+        if not media_type:
+            media_type = "application/octet-stream"
+    except Exception as e:
+        raise {"detail": "Ошибка загрузки файла"}
     return FileResponse(path=file_path, media_type=media_type)
 
 
-async def download_conclusions():
+async def download_conclusions(id: int):
     conclusion_data = await ConclusionDAO.find_by_id(id)
     if not conclusion_data:
         return {"detail": "Файл не найден"}
@@ -146,13 +155,13 @@ async def fill_statement(
     address: str,
     commission_info: str,
     chairman: str,
-    members: list,  # <-- список
+    members: list,
     owner: str,
     documents: str,
     conclusion: str,
     justification: str,
 ):
-    doc = Document("/doc/templates/statement_templates.docx")
+    doc = Document("doc/templates/statement_templates.docx")
 
     replacements = {
         "{DATE}": date,

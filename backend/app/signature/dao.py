@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import insert, or_, select, update
+from sqlalchemy import func, insert, or_, select, update
 from app.applications.models import Applications
 from app.conclusion.models import Conclusion
 from app.dao.base import BaseDAO
@@ -15,7 +15,7 @@ class SignatureDAO(BaseDAO):
         async with async_session_maker() as session:
             stmt = (
                 insert(cls.model)
-                .values(user_id=user_id, conclusion_id=conclusion_id)
+                .values(users_id=user_id, conclusion_id=conclusion_id)
                 .returning(cls.model)
             )
             result = await session.execute(stmt)
@@ -38,6 +38,20 @@ class SignatureDAO(BaseDAO):
     @classmethod
     async def all(cls):
         async with async_session_maker() as session:
+            # Считаем количество пользователей, которые подписали каждое заявление
+            subq = (
+                select(
+                    cls.model.conclusion_id,
+                    func.count().label("signed_count")
+                )
+                .where(cls.model.signed == True)
+                .group_by(cls.model.conclusion_id)
+                .subquery()
+            )
+
+            # Считаем общее количество пользователей (по user_id)
+            total_users_subq = select(func.count(func.distinct(cls.model.users_id))).scalar_subquery()
+
             query = (
                 select(
                     cls.model.__table__.columns,
@@ -46,7 +60,10 @@ class SignatureDAO(BaseDAO):
                 )
                 .join(Conclusion, cls.model.conclusion_id == Conclusion.id)
                 .join(Applications, Conclusion.applications_id == Applications.id)
+                .join(subq, subq.c.conclusion_id == Conclusion.id)
+                .where(subq.c.signed_count == total_users_subq)
             )
+
             result = await session.execute(query)
             return result.mappings().all()
 

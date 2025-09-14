@@ -32,9 +32,7 @@ async def create_applications_api(applications_data: SCreateApplications):
         applications_data.cadastral_number,
         applications_data.address,
     )
-
-# Проверить (реализовать уведомления, изменение даты и статуса)
-# Для какого-то заявления уже есть выезд
+    
 
 @router.patch("/departure")
 async def update_departure_api(

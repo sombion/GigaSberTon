@@ -24,9 +24,11 @@ async def update_signature(users_id: int, conclusion_id: int):
 
     signature_data: Signature = await SignatureDAO.update(signature_data.id)
 
-    conclusion_data: Conclusion = await ConclusionDAO.find_one_or_none(
-        id=signature_data.conclusion_id
-    )
+    conclusion_data: Conclusion = await ConclusionDAO.find_one_or_none(id=conclusion_id)
+    
+    if not conclusion_data:
+        raise {"detail": "Заявление комиссии не найдено"}
+
     applications_data: Applications = await ApplicationsDAO.find_one_or_none(
         id=conclusion_data.applications_id
     )
@@ -43,7 +45,7 @@ async def update_signature(users_id: int, conclusion_id: int):
         # Уведомление для пользователя
         for conclusion_user in conclusion_data_list:
             await NotificationDAO.add(
-                user_id=conclusion_user["users_id"],
+                user_id=int(conclusion_user["users_id"]),
                 text=f"Все члены комисси подписали заявление №{conclusion_id}",
             )
             await make_notification(

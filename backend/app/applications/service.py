@@ -95,11 +95,14 @@ async def view_applications(id: int):
     application_data = await ApplicationsDAO.find_by_id(id)
     if not application_data:
         return {"detail": "Файл не найден"}
-    file_path = application_data.file_url
+    file_path = f"{(application_data.file_url).split('.')[0]}.pdf"
     ext = os.path.splitext(file_path)[1].lower()
-    media_type, _ = mimetypes.guess_type(file_path)
-    if not media_type:
-        media_type = "application/octet-stream"
+    try:
+        media_type, _ = mimetypes.guess_type(file_path)
+        if not media_type:
+            media_type = "application/octet-stream"
+    except Exception as e:
+        raise {"detail": "Ошибка загрузки файла"}
     return FileResponse(path=file_path, media_type=media_type)
 
 
@@ -157,7 +160,7 @@ def applicant_statement(
     address: str,
 ):
     try:
-        template_path = "/doc/templates/applications_templates.docx"
+        template_path = "doc/templates/applications_templates.docx"
         # Преобразуем строковые пути в объекты Path
         template_path = Path(template_path)
         output_path = Path(output_path)
