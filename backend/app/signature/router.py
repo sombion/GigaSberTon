@@ -14,8 +14,8 @@ from app.signature.service import (
 router = APIRouter(prefix="/api/signature", tags=["API signature"])
 
 
-@router.get("/my")
-async def my_signature_api(current_user: Users = Depends(get_current_user)):
+@router.get("/all")
+async def all_signature_api(current_user: Users = Depends(get_current_user)):
     return await all()
 
 
@@ -23,7 +23,7 @@ async def my_signature_api(current_user: Users = Depends(get_current_user)):
 async def create_signature_api(
     signature_data: SAddSignature, current_user: Users = Depends(get_current_user)
 ):
-    return update_signature(
+    return await update_signature(
         users_id=current_user.id, conclusion_id=signature_data.conclusion_id
     )
 

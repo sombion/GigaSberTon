@@ -29,6 +29,8 @@ services:
     command: ["/app/docker/app.sh"]
     ports:
       - 8000:8000
+    volumes:
+      - ./doc:/app/doc  # сохраняем файлы на хосте
     depends_on:
       rabbitmq:
         condition: service_healthy

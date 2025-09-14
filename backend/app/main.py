@@ -8,7 +8,13 @@ from app.applications.router import router as applications_router
 from app.conclusion.router import router as conclusion_router
 from app.signature.router import router as signature_router
 from app.notification.router import router as notification_router
-from app.admin.views import ApplicationsAdmin, UsersAdmin
+from app.admin.views import (
+    ApplicationsAdmin,
+    UsersAdmin,
+    ConclusionAdmin,
+    SignatureAdmin,
+    NotificationAdmin,
+)
 
 from app.config import broker_router
 from app.applications.consumer import process_order
@@ -26,6 +32,9 @@ app.include_router(broker_router)
 
 admin.add_view(UsersAdmin)
 admin.add_view(ApplicationsAdmin)
+admin.add_view(ConclusionAdmin)
+admin.add_view(SignatureAdmin)
+admin.add_view(NotificationAdmin)
 
 origins = ["http://localhost:5500", "http://127.0.0.1:5500", "http://127.0.0.1:5173"]
 
