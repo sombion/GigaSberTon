@@ -14,9 +14,6 @@ from app.applications.models import ApplicationStatus, Applications
 from app.notification.service import make_notification
 from app.service.base import convert_to_pdf
 
-# def Назначение выезда
-
-
 async def create_applications(
     tg_id: int,
     fio: str,
