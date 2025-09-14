@@ -12,13 +12,14 @@ class ApplicationData(BaseModel):
     data: dict
 
 
-async def send_application(application_data: TgData):
+async def send_application(tg_id: int, data: dict):
     await router.broker.publish(
-        application_data.dict(),
-        queue="application",
+        {"tg_id": tg_id, "data": data},
+        queue="applications",
         content_type="application/json",
     )
-    logger.debug("application ->")
+    logger.debug("applications ->")
+    return 1
 
 
 async def send_output_agent(agent_data: TgData):

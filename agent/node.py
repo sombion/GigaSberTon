@@ -3,7 +3,7 @@ import re
 from loguru import logger
 
 # from producer import send_application
-from langchain.tools import tool
+from producer import send_application
 from state import State
 from create_llm import llm
 from langchain_core.messages import HumanMessage
@@ -16,24 +16,24 @@ from prompt import (
 )
 
 
-def filter_node(state: State):
+async def filter_node(state: State):
     return {}
 
 
-def check_user_data_node(state: State):
+async def check_user_data_node(state: State):
     return {}
 
 
-def confirmation_node(state: State):
+async def confirmation_node(state: State):
     return {}
 
 
-def change_node(state: State):
+async def change_node(state: State):
     logger.debug("change_node")
     return {"output_messages": "Напишите что хотите изменить", "await_response": None}
 
 
-def user_templates_node(state: State):
+async def user_templates_node(state: State):
     logger.debug("user_templates_node")
     user_text = state.get("input_messages", "")
     templates_data = state.get("templates_data", "")
@@ -54,7 +54,7 @@ def user_templates_node(state: State):
     return {"templates_data": answer}
 
 
-def not_fillled_data_user_node(state: State):
+async def not_fillled_data_user_node(state: State):
     logger.debug("not_fillled_data_user_node")
     templates_data = state.get("templates_data", "")
     messages = [
@@ -71,8 +71,7 @@ def check_data(templates_data: dict):
     cadastral_number = templates_data["cadastral_number"]
     address = templates_data["address"]
 
-    logger.debug(f"{fio} | {cadastral_number} | {address}")
-    # Получение данных с рос
+    logger.debug(f"Проверка данных с егрн: {fio} | {cadastral_number} | {address}")
 
 
 def safe_parse_agent_response(response: str) -> dict:
@@ -86,8 +85,7 @@ def safe_parse_agent_response(response: str) -> dict:
         raise ValueError(f"Ошибка при парсинге ответа агента: {e}")
 
 
-# Добавить проверку из реестра ... заявления
-def humman_check_node(state: State):
+async def humman_check_node(state: State):
     logger.debug("humman_check_node")
     templates_data = state.get("templates_data")
     templates_data_dict = safe_parse_agent_response(templates_data)
@@ -97,7 +95,7 @@ def humman_check_node(state: State):
     return {"templates_data": templates_data}
 
 
-def confirmation_final_node(state: State):
+async def confirmation_final_node(state: State):
     logger.debug("confirmation_node")
     await_response = state.get("await_response", "")
     templates_data = state.get("templates_data")
@@ -111,7 +109,7 @@ def confirmation_final_node(state: State):
         return {"output_messages": answer, "await_response": True}
 
 
-def info_agent_node(state: State):
+async def info_agent_node(state: State):
     logger.debug("info_agent_node")
     user_text = state.get("input_messages", "")
     messages = [
@@ -122,7 +120,7 @@ def info_agent_node(state: State):
     return {"output_messages": response.content}
 
 
-def invalid_request_node(state: State):
+async def invalid_request_node(state: State):
     logger.debug("invalid_request_node")
     user_text = state.get("input_messages", "")
     messages = [
@@ -132,8 +130,18 @@ def invalid_request_node(state: State):
     response = llm.invoke(messages)
     return {"output_messages": response.content}
 
-
-def send_applications_node(state: State):
+async def send_applications_node(state: State):
+    tg_id = state.get("tg_id")
+    templates_data = state.get("templates_data")
+    templates_data = safe_parse_agent_response(templates_data)
     logger.debug("send_applications_node")
-    # Отправка данных на бэк
+
+async def send_applications_node(state: State):
+    tg_id = state.get("tg_id")
+    templates_data = state.get("templates_data")
+    templates_data = safe_parse_agent_response(templates_data)
+    logger.debug("send_applications_node")
+
+    await send_application(tg_id, templates_data)
+
     return {"output_messages": "Заявление отправлено", "await_response": None}

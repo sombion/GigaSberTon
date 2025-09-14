@@ -141,10 +141,10 @@ async def update_departure(applications_id: str, departure_date: datetime):
     )
 
     for application in applications_data:
-        logger.debug(f"{application["tg_id"]}, {application["id"]}")
+        logger.debug(f"{application['tg_id']}, {application['id']}")
         await make_notification(
             tg_id=application["tg_id"],
-            text=f"Для заявки №{application["id"]} назначен выезд на {departure_date}",
+            text=f"Для заявки №{application['id']} назначен выезд на {departure_date.strftime('%d.%m.%Y')}",
         )
     if len(applications_data) < 1:
         return {"detail": "Выезды не найдены или уже назначены"}
