@@ -20,7 +20,33 @@ class UsersDAO(BaseDAO):
             return result.scalar()
 
     @classmethod
-    async def update(cls, id: int, hash_password: str, new_hash_password: str) -> Users:
+    async def update_fio(cls, id: int, fio: str):
+        async with async_session_maker() as session:
+            stmt = (
+                update(cls.model)
+                .where(cls.model.id == id)
+                .values(fio=fio)
+                .returning(cls.model)
+            )
+            result = await session.execute(stmt)
+            await session.commit()
+            return result.scalar()
+
+    @classmethod
+    async def update_email(cls, id: int, email: str):
+        async with async_session_maker() as session:
+            stmt = (
+                update(cls.model)
+                .where(cls.model.id == id)
+                .values(email=email)
+                .returning(cls.model)
+            )
+            result = await session.execute(stmt)
+            await session.commit()
+            return result.scalar()
+
+    @classmethod
+    async def update_password(cls, id: int, new_hash_password: str) -> Users:
         async with async_session_maker() as session:
             stmt = (
                 update(cls.model)

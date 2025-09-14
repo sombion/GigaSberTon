@@ -65,3 +65,21 @@ async def logout(request: Request, response: Response):
         await SessionDAO.delete_session(token)
     response.delete_cookie(settings.COOKIE_NAME)
     return {"message": "logged out"}
+
+async def update_fio(id: int, fio: str):
+    await UsersDAO.update_fio(id, fio)
+    return {"detail": "ФИО успешно изменено"}
+
+async def update_email(id: int, email: str):
+    await UsersDAO.update_email(id, email)
+    return {"detail": "Почта успешно изменена"}
+
+async def update_password(id: int, last_password: str, new_password: str, confirm_password: str):
+    if new_password != confirm_password:
+        raise {"detail": "Пароли не совпадают"}
+    user: Users = await UsersDAO.find_by_id(id)
+    if not await verify_password(last_password, user.hash_password):
+        raise {"detail": "Текущий пароль не верный"}
+    new_hash_password = await get_password_hash(new_password)
+    await UsersDAO.update_password(id, new_hash_password)
+    return {"detail": "Пароль успешно изменен"}
