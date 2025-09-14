@@ -5,7 +5,7 @@ from app.config import broker_router
 
 class ApplicationsData(BaseModel):
     tg_id: int
-    text: str
+    text: dict
 
 
 @broker_router.subscriber("applications")

@@ -8,5 +8,6 @@ class State(TypedDict):
     input_messages: str
     templates_data: str
     output_messages: str
+    await_response: str
 
 graph_builder = StateGraph(State)

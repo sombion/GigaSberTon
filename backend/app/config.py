@@ -11,11 +11,14 @@ class Settings(BaseSettings):
 
     COOKIE_NAME: str
 
+    RABBIT_HOST: str
+    RABBIT_PORT: int
+
     @property
     def DATABASE_URL(self):
         return f'postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}'
     model_config = SettingsConfigDict(env_file='.env')
 
-broker_router = RabbitRouter()
-
 settings = Settings()
+
+broker_router = RabbitRouter(host=settings.RABBIT_HOST, port=settings.RABBIT_PORT)

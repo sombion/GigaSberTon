@@ -31,8 +31,6 @@ class Applications(Base):
     cadastral_number: Mapped[str] = mapped_column(index=True)
     address: Mapped[str]
     street: Mapped[str]
-    gps_lat: Mapped[float]
-    gps_lng: Mapped[float]
 
     # Путь шаблона
     file_url: Mapped[str] = mapped_column(nullable=True)

@@ -10,8 +10,6 @@ class SCreateApplications(BaseModel):
     email: str = Field(...),
     cadastral_number: str = Field(...),
     address: str = Field(...),
-    gps_lat: float = Field(...),
-    gps_lng: float = Field(...),
 
 class SApplicationsDeparture(BaseModel):
     applications_id: str = Field(...)

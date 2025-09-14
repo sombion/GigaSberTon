@@ -18,8 +18,6 @@ class ApplicationsDAO(BaseDAO):
         cadastral_number: str,
         street: str,
         address: str,
-        gps_lat: int,
-        gps_lng: int,
         file_url: str,
     ) -> Applications:
         async with async_session_maker() as session:
@@ -33,8 +31,6 @@ class ApplicationsDAO(BaseDAO):
                     cadastral_number=cadastral_number,
                     street=street,
                     address=address,
-                    gps_lat=gps_lat,
-                    gps_lng=gps_lng,
                     file_url=file_url,
                 )
                 .returning(cls.model)

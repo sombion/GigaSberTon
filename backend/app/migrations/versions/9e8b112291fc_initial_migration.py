@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 5030b730b585
+Revision ID: 9e8b112291fc
 Revises: 
-Create Date: 2025-09-13 20:02:40.097250
+Create Date: 2025-09-14 14:13:13.540360
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '5030b730b585'
+revision: str = '9e8b112291fc'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,11 +30,9 @@ def upgrade() -> None:
     sa.Column('cadastral_number', sa.String(), nullable=False),
     sa.Column('address', sa.String(), nullable=False),
     sa.Column('street', sa.String(), nullable=False),
-    sa.Column('gps_lat', sa.Float(), nullable=False),
-    sa.Column('gps_lng', sa.Float(), nullable=False),
     sa.Column('file_url', sa.String(), nullable=True),
     sa.Column('status', sa.Enum('ACCEPTED', 'VISIT_ASSIGNED', 'COMMISSION_REVIEW', 'COMMISSION_RESULT', name='applicationstatus'), nullable=False),
-    sa.Column('departure_date', sa.DateTime(), nullable=True),
+    sa.Column('departure_date', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_applications_cadastral_number'), 'applications', ['cadastral_number'], unique=False)
@@ -53,7 +51,7 @@ def upgrade() -> None:
     op.create_table('conclusion',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('applications_id', sa.Integer(), nullable=False),
-    sa.Column('create_date', sa.DateTime(), nullable=False),
+    sa.Column('create_date', sa.DateTime(timezone=True), nullable=False),
     sa.Column('file_url', sa.String(), nullable=True),
     sa.ForeignKeyConstraint(['applications_id'], ['applications.id'], ),
     sa.PrimaryKeyConstraint('id')

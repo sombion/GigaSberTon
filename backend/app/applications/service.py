@@ -24,8 +24,6 @@ async def create_applications(
     email: str,
     cadastral_number: str,
     address: str,
-    gps_lat: float,
-    gps_lng: float,
 ):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     safe_filename = f"{timestamp}.docx"
@@ -52,8 +50,6 @@ async def create_applications(
         email=email,
         cadastral_number=cadastral_number,
         street=street,
-        gps_lat=gps_lat,
-        gps_lng=gps_lng,
         file_url=file_path,
     )
 

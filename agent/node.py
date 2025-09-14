@@ -11,7 +11,8 @@ from prompt import (
     info_agent_prompt,
     invalid_request_prompt,
     user_templates_prompt,
-    not_fillled_data_user,
+    not_fillled_data_user_prompt,
+    confirmation_final_prompt,
 )
 
 
@@ -23,10 +24,19 @@ def check_user_data_node(state: State):
     return {}
 
 
+def confirmation_node(state: State):
+    return {}
+
+
+def change_node(state: State):
+    logger.debug("change_node")
+    return {"output_messages": "Напишите что хотите изменить", "await_response": None}
+
+
 def user_templates_node(state: State):
+    logger.debug("user_templates_node")
     user_text = state.get("input_messages", "")
     templates_data = state.get("templates_data", "")
-    logger.debug(f"td: {templates_data}")
     messages = [
         {"role": "system", "content": user_templates_prompt},
         # {"role": "assistant", "content": templates_data},
@@ -45,9 +55,10 @@ def user_templates_node(state: State):
 
 
 def not_fillled_data_user_node(state: State):
+    logger.debug("not_fillled_data_user_node")
     templates_data = state.get("templates_data", "")
     messages = [
-        {"role": "system", "content": not_fillled_data_user},
+        {"role": "system", "content": not_fillled_data_user_prompt},
         {"role": "assistant", "content": templates_data},
     ]
     responce = llm.invoke(messages)
@@ -56,17 +67,18 @@ def not_fillled_data_user_node(state: State):
 
 
 def check_data(templates_data: dict):
-    fio = templates_data['fio']
-    cadastral_number = templates_data['cadastral_number']
-    address = templates_data['address']
+    fio = templates_data["fio"]
+    cadastral_number = templates_data["cadastral_number"]
+    address = templates_data["address"]
 
     logger.debug(f"{fio} | {cadastral_number} | {address}")
     # Получение данных с рос
 
+
 def safe_parse_agent_response(response: str) -> dict:
     try:
         # Ищем содержимое фигурных скобок
-        match = re.search(r'\{.*\}', response, re.DOTALL)
+        match = re.search(r"\{.*\}", response, re.DOTALL)
         if not match:
             raise ValueError("JSON не найден в ответе")
         return json.loads(match.group(0))
@@ -76,18 +88,31 @@ def safe_parse_agent_response(response: str) -> dict:
 
 # Добавить проверку из реестра ... заявления
 def humman_check_node(state: State):
+    logger.debug("humman_check_node")
     templates_data = state.get("templates_data")
     templates_data_dict = safe_parse_agent_response(templates_data)
 
-    # Отправка данных на бэк
-    # send_application()
-    # Данные заполнены. Сообщаем пользователю о сохранении и сохраняем объединённые данные в templates_data
     logger.debug(templates_data_dict)
     check_data(templates_data_dict)
-    return {"output_messages": "Заявление отправлено", "templates_data": templates_data}
+    return {"templates_data": templates_data}
+
+
+def confirmation_final_node(state: State):
+    logger.debug("confirmation_node")
+    await_response = state.get("await_response", "")
+    templates_data = state.get("templates_data")
+    if not await_response:
+        messages = [
+            {"role": "system", "content": confirmation_final_prompt},
+            {"role": "assistant", "content": templates_data},
+        ]
+        responce = llm.invoke(messages)
+        answer = responce.content
+        return {"output_messages": answer, "await_response": True}
 
 
 def info_agent_node(state: State):
+    logger.debug("info_agent_node")
     user_text = state.get("input_messages", "")
     messages = [
         {"role": "system", "content": info_agent_prompt},
@@ -98,6 +123,7 @@ def info_agent_node(state: State):
 
 
 def invalid_request_node(state: State):
+    logger.debug("invalid_request_node")
     user_text = state.get("input_messages", "")
     messages = [
         {"role": "system", "content": invalid_request_prompt},
@@ -105,3 +131,9 @@ def invalid_request_node(state: State):
     ]
     response = llm.invoke(messages)
     return {"output_messages": response.content}
+
+
+def send_applications_node(state: State):
+    logger.debug("send_applications_node")
+    # Отправка данных на бэк
+    return {"output_messages": "Заявление отправлено", "await_response": None}

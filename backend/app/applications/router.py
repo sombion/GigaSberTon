@@ -31,8 +31,6 @@ async def create_applications_api(applications_data: SCreateApplications):
         applications_data.email,
         applications_data.cadastral_number,
         applications_data.address,
-        applications_data.gps_lat,
-        applications_data.gps_lng,
     )
 
 # Проверить (реализовать уведомления, изменение даты и статуса)
