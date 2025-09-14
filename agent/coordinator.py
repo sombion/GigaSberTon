@@ -5,7 +5,7 @@ from prompt import filter_prompt
 from prompt import check_user_data_prompt, confirmation_prompt, change_prompt
 
 
-def filter_router(state: State):
+async def filter_router(state: State):
     user_text = state.get("input_messages", "")
     output_messages = state.get("output_messages", "")
     await_response = state.get("await_response", "")
@@ -33,7 +33,7 @@ def filter_router(state: State):
     return "invalid_request_node"
 
 
-def check_user_data_router(state: State):
+async def check_user_data_router(state: State):
     templates_data = state.get("templates_data", "null")
     messages = [
         {"role": "system", "content": check_user_data_prompt},
@@ -50,7 +50,7 @@ def check_user_data_router(state: State):
     return "False"
 
 
-def confirmation_router(state: State):
+async def confirmation_router(state: State):
     await_response = state.get("await_response")
     if not await_response:
         return "confirmation_final_node"
@@ -71,7 +71,7 @@ def confirmation_router(state: State):
             return "change_node"
 
 
-def change_router(state: State):
+async def change_router(state: State):
     input_messages = state.get("input_messages")
     messages = [
         {"role": "system", "content": change_prompt},

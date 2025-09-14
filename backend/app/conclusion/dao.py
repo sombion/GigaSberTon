@@ -76,13 +76,14 @@ class ConclusionDAO(BaseDAO):
         user_id: int,
     ):
         async with async_session_maker() as session:
-            query = select(cls.model).join(
-                Signature, cls.model.id == Signature.conclusion_id
+            query = (
+                select(cls.model.__table__.columns, Applications.__table__.columns)
+                .join(Signature, cls.model.id == Signature.conclusion_id)
+                .join(Applications, cls.model.applications_id == Applications.id)
             )
             if street:
                 query = query.where(
                     Applications.street == street,
-                    Applications.status == ApplicationStatus.COMMISSION_REVIEW,
                 )
             if date_from and date_to:
                 query = query.where(cls.model.create_date.between(date_from, date_to))

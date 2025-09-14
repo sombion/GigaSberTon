@@ -11,17 +11,16 @@ from pydantic import BaseModel
 
 from config import settings
 
-# from faststream.rabbit import RabbitBroker
+from faststream.rabbit import RabbitBroker
 
 
 # --- Инициализация ---
 dp = Dispatcher()
 bot = Bot(
-    token=settings.BOT_TOKEN,
-    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+    token=settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
 
-# broker = RabbitBroker()
+broker = RabbitBroker()
 
 
 # --- Модель данных для Rabbit ---
@@ -31,7 +30,6 @@ class TgData(BaseModel):
 
 
 # --- Подписчики брокера ---
-"""
 @broker.subscriber("notification")
 async def notification_user(data: TgData):
     await bot.send_message(chat_id=data.tg_id, text=data.text)
@@ -42,7 +40,6 @@ async def notification_user(data: TgData):
 async def output_agent_messages(data: TgData):
     await bot.send_message(chat_id=data.tg_id, text=data.text)
     logging.info("-> output_agent")
-"""
 
 
 # --- /start ---
@@ -157,8 +154,6 @@ async def handle_delete(msg: Message):
         await msg.answer(f"🗑 Заявление №{app_id} успешно удалено")
 
 
-# --- Передача всего остального текста в Rabbit ---
-"""
 @dp.message(F.text)
 async def send_agent(message: Message):
     tg_id = message.chat.id
@@ -172,22 +167,15 @@ async def send_agent(message: Message):
         content_type="application/json",
     )
     logging.info("input_agent ->")
-    await message.answer("✅ Ваши данные отправлены AI-агенту, ожидайте ответ...")
-"""
-
-
-# --- Если Rabbit выключен — можно просто заглушку ---
-@dp.message(F.text)
-async def handle_fallback(msg: Message):
-    await msg.answer("❗ Неизвестная команда. Используйте /help")
+    # await message.answer("✅ Ваши данные отправлены AI-агенту, ожидайте ответ...")
 
 
 # --- Запуск ---
 async def main() -> None:
-    # async with broker:
-    #     await broker.start()
-    logging.info("Брокер стартовал")
-    await dp.start_polling(bot)
+    async with broker:
+        logging.info("Брокер стартовал")
+        await broker.start()
+        await dp.start_polling(bot)
     logging.info("Все закончилось...")
 
 
