@@ -106,13 +106,13 @@ async def create_conclusions(
 async def edit_conclusions(): ...
 
 
-async def all_conclusions():
-    conclusion_data = await ConclusionDAO.all()
+async def all_conclusions(user_id: int):
+    conclusion_data = await ConclusionDAO.all(user_id)
     return {"count": len(conclusion_data), "conclusions": conclusion_data}
 
 
-async def search_conclusions(text: str):
-    conclusion_data = await ConclusionDAO.search(text)
+async def search_conclusions(text: str, user_id: int):
+    conclusion_data = await ConclusionDAO.search(text, user_id)
     return {"count": len(conclusion_data), "conclusions": conclusion_data}
 
 

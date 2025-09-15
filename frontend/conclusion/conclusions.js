@@ -1,3 +1,33 @@
+async function subscribe_signature(conclusionId) {
+    try {
+        let response = await fetch('http://127.0.0.1:8000/api/signature/subscribe', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ conclusion_id: conclusionId })
+        });
+
+        if (!response.ok) {
+            let data = await response.json();
+            showToast(`${data.detail}`);
+            throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+
+        let result = await response.json();
+        showToast("Подписка успешно оформлена");
+        console.log("Результат подписки:", result);
+
+        return result;
+
+    } catch (error) {
+        showToast(`Ошибка подписки: ${error}`);
+        console.error("Ошибка подписки:", error);
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
   const districtBtn = document.getElementById("districtBtn");
   const districtList = document.getElementById("districtList");
@@ -41,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
   approveBtn.addEventListener("click", () => {
     if (currentId) {
       console.log("Заявление подписано:", currentId);
-      // тут можно отправить fetch POST/PUT на бэк
+      subscribe_signature(currentId)
       modal.style.display = "none";
     }
   });
@@ -49,7 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Обработка кнопки "Отклонить"
   rejectBtn.addEventListener("click", () => {
     if (currentId) {
-      console.log("Заявление отклонено:", currentId);
       modal.style.display = "none";
     }
   });

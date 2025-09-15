@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import delete, insert, or_, select, update
+from sqlalchemy import delete, insert, or_, select, update, case, exists, select
 from app.applications.models import ApplicationStatus, Applications
 from app.dao.base import BaseDAO
 from app.database import async_session_maker
@@ -42,19 +42,64 @@ class ConclusionDAO(BaseDAO):
             return result.scalar()
 
     @classmethod
-    async def all(cls):
+    async def all(cls, user_id: int):
         async with async_session_maker() as session:
-            query = select(
-                cls.model.__table__.columns, Applications.__table__.columns
-            ).join(Applications, cls.model.applications_id == Applications.id)
+            signed_case = case(
+                (
+                    exists().where(
+                        (Signature.conclusion_id == cls.model.id)
+                        & (Signature.users_id == user_id)
+                        & (Signature.signed == True)
+                    ),
+                    True,
+                ),
+                else_=False,
+            ).label("signed")
+
+            query = (
+                select(
+                    cls.model.id.label("conclusion_id"),
+                    Applications.id.label("application_id"),
+                    Applications.fio,
+                    Applications.cadastral_number,
+                    Applications.phone,
+                    Applications.address,
+                    cls.model.create_date,
+                    signed_case,
+                )
+                .join(Applications, cls.model.applications_id == Applications.id)
+                .order_by(signed_case.asc(), cls.model.id.asc())
+            )
+
             result = await session.execute(query)
             return result.mappings().all()
 
     @classmethod
-    async def search(cls, search_text: str):
+    async def search(cls, search_text: str, user_id: int):
         async with async_session_maker() as session:
+            signed_case = case(
+                (
+                    exists().where(
+                        (Signature.conclusion_id == cls.model.id)
+                        & (Signature.users_id == user_id)
+                        & (Signature.signed == True)
+                    ),
+                    True,
+                ),
+                else_=False,
+            ).label("signed")
+
             query = (
-                select(cls.model.__table__.columns, Applications.__table__.columns)
+                select(
+                    cls.model.id.label("conclusion_id"),
+                    Applications.id.label("application_id"),
+                    Applications.fio,
+                    Applications.cadastral_number,
+                    Applications.phone,
+                    Applications.address,
+                    cls.model.create_date,
+                    signed_case,
+                )
                 .join(Applications, cls.model.applications_id == Applications.id)
                 .where(
                     or_(
@@ -62,7 +107,9 @@ class ConclusionDAO(BaseDAO):
                         Applications.fio.ilike(f"%{search_text}%"),
                     )
                 )
+                .order_by(signed_case.asc(), cls.model.id.asc())
             )
+
             result = await session.execute(query)
             return result.mappings().all()
 
@@ -76,29 +123,45 @@ class ConclusionDAO(BaseDAO):
         user_id: int,
     ):
         async with async_session_maker() as session:
-            query = (
-                select(cls.model.__table__.columns, Applications.__table__.columns)
-                .join(Signature, cls.model.id == Signature.conclusion_id)
-                .join(Applications, cls.model.applications_id == Applications.id)
-            )
+            signed_case = case(
+                (
+                    exists().where(
+                        (Signature.conclusion_id == cls.model.id)
+                        & (Signature.users_id == user_id)
+                        & (Signature.signed == True)
+                    ),
+                    True,
+                ),
+                else_=False,
+            ).label("signed")
+
+            query = select(
+                cls.model.id.label("conclusion_id"),
+                Applications.id.label("application_id"),
+                Applications.fio,
+                Applications.cadastral_number,
+                Applications.phone,
+                Applications.address,
+                cls.model.create_date,
+                signed_case,
+            ).join(Applications, cls.model.applications_id == Applications.id)
+
             if street:
-                query = query.where(
-                    Applications.street == street,
-                )
+                streets_list = [r.strip() for r in street.split(",") if r.strip()]
+                query = query.filter(Applications.street.in_(streets_list))
             if date_from and date_to:
                 query = query.where(cls.model.create_date.between(date_from, date_to))
             elif date_from:
                 query = query.where(cls.model.create_date >= date_from)
             elif date_to:
                 query = query.where(cls.model.create_date <= date_to)
+
             if signed:
-                query = query.where(
-                    Signature.users_id == user_id, Signature.signed == True
-                )
+                query = query.where(signed_case == True)
             else:
-                query = query.where(
-                    Signature.users_id == user_id, Signature.signed == False
-                )
+                query = query.where(signed_case == False)
+
+            query = query.order_by(signed_case.asc(), cls.model.id.asc())
 
             result = await session.execute(query)
             return result.mappings().all()

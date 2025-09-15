@@ -1,6 +1,6 @@
-async function load_conclusions() {
+async function load_signets() {
     try {
-        let response = await fetch('http://127.0.0.1:8000/api/conclusion/all', {
+        let response = await fetch('http://127.0.0.1:8000/api/signature/all', {
             method: 'GET',
             credentials: 'include'
         });
@@ -11,9 +11,9 @@ async function load_conclusions() {
             throw new Error(`Ошибка запроса: ${response.status}`);
         }
 
-        let conclusionsData = await response.json();
-        let count = conclusionsData.count
-        let conclusions = conclusionsData.conclusions
+        let signets_data = await response.json();
+        let count = signets_data.count
+        let signets = signets_data.signatures
 
         let foundCount = document.getElementById('foundCount')
         let textSearch = document.getElementById('textSearch')
@@ -23,33 +23,30 @@ async function load_conclusions() {
         textSearch.textContent = "Всего: "
         word.textContent = declension(count)
 
-        const conclusionsList = document.getElementById("applicationsList");
-        conclusionsList.innerHTML = "";
+        const signetsList = document.getElementById("applicationsList");
+        signetsList.innerHTML = "";
 
         if (count == 0) {
             const emptyBlock = document.createElement("div");
             emptyBlock.className = "empty-block";
             emptyBlock.textContent = "Список заявлений пуст.";
-            conclusionsList.appendChild(emptyBlock);
+            signetsList.appendChild(emptyBlock);
         } else {
-            conclusions.forEach(conclusion => {
+            signets.forEach(signet => {
                 const card = document.createElement("div");
                 card.className = "app-card";
                 
-                let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
-                
                 card.innerHTML = `
-                    <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
-                        <span>${conclusion.conclusion_id}</span>
-                        <span><b>ФИО:</b> ${conclusion.fio}</span>
-                        <span><b>Адрес:</b> ${conclusion.address}</span>
-                        <span><b>Телефон:</b> ${conclusion.phone}</span>
-                        <span><b>Дата создания:</b> ${formatted}</span>
+                    <div class="signet" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
+                        <span> ${signet.conclusion_id}</span>
+                        <span><b>ФИО:</b> ${signet.fio}</span>
+                        <span><b>Адрес:</b> ${signet.address}</span>
+                        <span><b>Кадастровый номер:</b> ${signet.cadastral_number}</span>
                     </div>
-                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.id}">Подписать</button>`}
+                    <a href="http://127.0.0.1:8000/api/conclusion/download/${signet.conclusion_id}" class="btn-details">Скачать</a>
                 `;
 
-                conclusionsList.appendChild(card);
+                signetsList.appendChild(card);
             });
         }
 
@@ -112,11 +109,11 @@ function declension(num) {
   return "заявлений";
 }
 
-async function search_conclusions() {
+async function search_applications() {
     try {
         let searchInput = document.getElementById("searchInput")
         text = searchInput.value
-        let response = await fetch(`http://127.0.0.1:8000/api/conclusion/search/${text}`, {
+        let response = await fetch(`http://127.0.0.1:8000/api/signature/search/${text}`, {
             method: 'GET',
             credentials: 'include'
         });
@@ -127,9 +124,9 @@ async function search_conclusions() {
             throw new Error(`Ошибка запроса: ${response.status}`);
         }
 
-        let conclusionsData = await response.json();
-        let count = conclusionsData.count
-        let conclusions = conclusionsData.conclusions
+        let applications_data = await response.json();
+        let count = applications_data.count
+        let applications = applications_data.signatures
 
         let foundCount = document.getElementById('foundCount')
         let textSearch = document.getElementById('textSearch')
@@ -139,33 +136,31 @@ async function search_conclusions() {
         textSearch.textContent = "Найдено: "
         word.textContent = declension(count)
 
-        const conclusionsList = document.getElementById("applicationsList");
-        conclusionsList.innerHTML = "";
+        const applicationsList = document.getElementById("applicationsList");
+        applicationsList.innerHTML = "";
 
         if (count == 0) {
             const emptyBlock = document.createElement("div");
             emptyBlock.className = "empty-block";
             emptyBlock.textContent = "Ничего не найдено по вашему запросу.";
-            conclusionsList.appendChild(emptyBlock);
+            applicationsList.appendChild(emptyBlock);
         } else {
-            conclusions.forEach(conclusion => {
+            applications.forEach(application => {
                 const card = document.createElement("div");
                 card.className = "app-card";
+                card.dataset.district = application.district;
 
-                let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
-                
                 card.innerHTML = `
-                    <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
-                        <span>${conclusion.conclusion_id}</span>
-                        <span><b>ФИО:</b> ${conclusion.fio}</span>
-                        <span><b>Адрес:</b> ${conclusion.address}</span>
-                        <span><b>Телефон:</b> ${conclusion.phone}</span>
-                        <span><b>Дата создания:</b> ${formatted}</span>
+                    <div class="signet" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
+                        <span> ${application.conclusion_id}</span>
+                        <span><b>ФИО:</b> ${application.fio}</span>
+                        <span><b>Адрес:</b> ${application.address}</span>
+                        <span><b>Кадастровый номер:</b> ${application.cadastral_number}</span>
                     </div>
-                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.id}">Подписать</button>`}
+                    <a href="http://127.0.0.1:8000/api/conclusion/download/${application.conclusion_id}" class="btn-details">Скачать</a>
                 `;
 
-                conclusionsList.appendChild(card);
+                applicationsList.appendChild(card);
             });
         }
 
@@ -174,7 +169,6 @@ async function search_conclusions() {
         console.error("Ошибка загрузки заявок:", error);
     }
 }
-
 
 async function apply_filters() {
     try {
@@ -186,17 +180,14 @@ async function apply_filters() {
         const dateFrom = document.getElementById("dateFrom").value;
         const dateTo = document.getElementById("dateTo").value;
 
-        const signed = document.getElementById("signedVisit").checked;
-
         // Формируем query параметры
         const params = new URLSearchParams();
         if (street.length > 0) params.append("street", street.join(","));
         if (dateFrom) params.append("date_from", dateFrom);
         if (dateTo) params.append("date_to", dateTo);
-        if (signed) params.append("signed", "true");
 
         // Отправляем запрос
-        let response = await fetch(`http://127.0.0.1:8000/api/conclusion/filter?${params.toString()}`, {
+        let response = await fetch(`http://127.0.0.1:8000/api/signature/filter?${params.toString()}`, {
             method: 'GET',
             credentials: 'include'
         });
@@ -207,9 +198,9 @@ async function apply_filters() {
             throw new Error(`Ошибка запроса: ${response.status}`);
         }
 
-        let conclusionsData = await response.json();
-        let count = conclusionsData.count;
-        let conclusions = conclusionsData.conclusions;
+        let applications_data = await response.json();
+        let count = applications_data.count;
+        let applications = applications_data.signatures;
 
         let foundCount = document.getElementById('foundCount');
         let textSearch = document.getElementById('textSearch');
@@ -219,34 +210,31 @@ async function apply_filters() {
         textSearch.textContent = "Найдено: ";
         word.textContent = declension(count);
 
-        const conclusionsList = document.getElementById("applicationsList");
-        conclusionsList.innerHTML = "";
+        const applicationsList = document.getElementById("applicationsList");
+        applicationsList.innerHTML = "";
 
         if (count === 0) {
             const emptyBlock = document.createElement("div");
             emptyBlock.className = "empty-block";
             emptyBlock.textContent = "Ничего не найдено по выбранным фильтрам.";
-            conclusionsList.appendChild(emptyBlock);
+            applicationsList.appendChild(emptyBlock);
         } else {
-            conclusions.forEach(conclusion => {
+            applications.forEach(application => {
                 const card = document.createElement("div");
                 card.className = "app-card";
-                card.dataset.district = conclusion.district;
+                card.dataset.district = application.district;
 
-                let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
-                
                 card.innerHTML = `
-                    <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
-                        <span>${conclusion.conclusion_id}</span>
-                        <span><b>ФИО:</b> ${conclusion.fio}</span>
-                        <span><b>Адрес:</b> ${conclusion.address}</span>
-                        <span><b>Телефон:</b> ${conclusion.phone}</span>
-                        <span><b>Дата создания:</b> ${formatted}</span>
+                    <div class="signet" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
+                        <span> ${application.conclusion_id}</span>
+                        <span><b>ФИО:</b> ${application.fio}</span>
+                        <span><b>Адрес:</b> ${application.address}</span>
+                        <span><b>Кадастровый номер:</b> ${application.cadastral_number}</span>
                     </div>
-                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.id}">Подписать</button>`}
+                    <a href="http://127.0.0.1:8000/api/conclusion/download/${application.conclusion_id}" class="btn-details">Скачать</a>
                 `;
 
-                conclusionsList.appendChild(card);
+                applicationsList.appendChild(card);
             });
         }
 
@@ -256,17 +244,14 @@ async function apply_filters() {
     }
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
-    // Загрузка заявлений
-    load_conclusions();
-    // Загрузка регионов
+    load_signets();
     load_street();
 
     // Поиск
     const searchBtn = document.getElementById("searchBtn");
     searchBtn.addEventListener("click", async () => {
-        await search_conclusions();
+        await search_applications();
     });
 
     // Применение фильтров
@@ -275,14 +260,11 @@ document.addEventListener("DOMContentLoaded", () => {
         await apply_filters();
     });
 
-
     const dateFrom = document.getElementById("dateFrom");
     const dateTo = document.getElementById("dateTo");
 
     const clearFiltersBtn = document.getElementById("clearFilters");
     
-    const filterVisit = document.getElementById("signedVisit");
-
     // --- Сброс фильтров ---
     clearFiltersBtn.addEventListener("click", () => {
         // Сбрасываем чекбоксы
@@ -292,11 +274,24 @@ document.addEventListener("DOMContentLoaded", () => {
         dateFrom.value = "";
         dateTo.value = "";
 
-        filterVisit.checked = false
-
         // Возвращаем текст кнопки выбора районов
         districtBtn.textContent = "Выберите районы ▾";
 
-        load_conclusions();
+        load_signets();
+    });
+
+    const districtBtn = document.getElementById("districtBtn");
+    const districtList = document.getElementById("districtList");
+
+    districtList.addEventListener("change", function () {
+        const checked = [...districtList.querySelectorAll("input[type=checkbox]:checked")];
+        if (checked.length === 0) {
+        districtBtn.textContent = "Выберите районы ▾";
+        } else if (checked.length <= 3) {
+        const names = checked.map(cb => cb.value).join(", ");
+        districtBtn.textContent = names + " ▾";
+        } else {
+            districtBtn.textContent = `Выбрано ${checked.length} районов`;
+        }
     });
 });

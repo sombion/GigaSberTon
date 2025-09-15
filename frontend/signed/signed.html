@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Подписанные документы</title>
   <link rel="stylesheet" href="signed.css">
+  <link rel="stylesheet" href="../toasts/styles.css">
   <link rel="stylesheet" href="../filter/filter.css">
 </head>
 <body>
@@ -30,13 +31,15 @@
 
     <!-- Поиск -->
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Введите название или дату">
+      <input type="text" id="searchInput" placeholder="Введите ФИО или кадастровый номер" />
       <button id="searchBtn">Поиск</button>
     </div>
 
     <!-- Счётчик -->
     <div class="counter">
-      Всего: 8 <span id="word">документов</span>
+      <span id="textSearch"></span>
+      <span id="foundCount"></span>
+      <span id="word"></span>
     </div>
 
     <!-- Основной контент -->
@@ -51,18 +54,13 @@
           <div id="districtDropdown" class="dropdown-content">
             <input type="text" id="districtSearch" placeholder="Поиск района..." />
             <div id="districtList">
-              <label><input type="checkbox" name="district" value="ЦАО" /> ЦАО</label>
-              <label><input type="checkbox" name="district" value="ЮЗАО" /> ЮЗАО</label>
-              <label><input type="checkbox" name="district" value="СЗАО" /> СЗАО</label>
-              <label><input type="checkbox" name="district" value="ВАО" /> ВАО</label>
-              <label><input type="checkbox" name="district" value="Советский" /> Советский</label>
-              <label><input type="checkbox" name="district" value="Левобережный" /> Левобережный</label>
+              <label><input type="checkbox" name="district" value=" " />  </label>
             </div>
           </div>
         </div>
 
         <div class="filter-section">
-          <label>Дата подписания</label>
+          <label>Дата заключения заявления комиссии:</label>
           <p></p>
           <label for="dateFrom">от:</label>
           <input type="date" id="dateFrom">
@@ -78,35 +76,7 @@
       </aside>
 
       <!-- Список документов -->
-      <main class="applications-list" id="docsList">
-        <div class="app-card" data-type="Акт" data-text="Акт обследования дома">
-          <span>Акт обследования дома | 01.09.2025</span>
-          <a href="doc1.pdf" class="download-btn">Скачать</a>
-        </div>
-        <div class="app-card" data-type="Решение" data-text="Решение комиссии">
-          <span>Решение комиссии | 28.08.2025</span>
-          <a href="doc2.pdf" class="download-btn">Скачать</a>
-        </div>
-        <div class="app-card" data-type="Протокол" data-text="Протокол заседания">
-          <span>Протокол заседания | 20.08.2025</span>
-          <a href="doc3.pdf" class="download-btn">Скачать</a>
-        </div>
-        <div class="app-card" data-type="Акт" data-text="Акт проверки коммуникаций">
-          <span>Акт проверки коммуникаций | 15.07.2025</span>
-          <a href="doc4.pdf" class="download-btn">Скачать</a>
-        </div>
-        <div class="app-card" data-type="Акт" data-text="Акт проверки коммуникаций">
-          <span>Акт проверки коммуникаций | 15.07.2025</span>
-          <a href="doc4.pdf" class="download-btn">Скачать</a>
-        </div>
-        <div class="app-card" data-type="Акт" data-text="Акт проверки коммуникаций">
-          <span>Акт проверки коммуникаций | 15.07.2025</span>
-          <a href="doc4.pdf" class="download-btn">Скачать</a>
-        </div>
-        <div class="app-card" data-type="Акт" data-text="Акт проверки коммуникаций">
-          <span>Акт проверки коммуникаций | 15.07.2025</span>
-          <a href="doc4.pdf" class="download-btn">Скачать</a>
-        </div>
+      <main class="applications-list" id="applicationsList">
         <div class="app-card" data-type="Акт" data-text="Акт проверки коммуникаций">
           <span>Акт проверки коммуникаций | 15.07.2025</span>
           <a href="doc4.pdf" class="download-btn">Скачать</a>
@@ -115,10 +85,11 @@
     </div>
   </div>
 
+  <div id="toast" class="toast hidden">Уведомление!</div>
+
   <script src="signed.js"></script>
+  <script src="requests.js"></script>
   <script src="../filter/filter.js"></script>
-  <script>
-  
-  </script>
+  <script src="../toasts/main.js"></script>
 </body>
 </html>
