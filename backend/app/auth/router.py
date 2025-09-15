@@ -1,5 +1,6 @@
 from typing import Any
 from fastapi import APIRouter, Depends, Request, Response, status
+from app.auth.dao import UsersDAO
 from app.auth.dependency import get_current_user
 from app.auth.models import Users
 from app.auth.schemas import (
@@ -24,6 +25,11 @@ router = APIRouter(prefix="/api/auth", tags=["API Регистрации"])
 @router.get("/me")
 async def me_api(current_user=Depends(get_current_user)):
     return current_user
+
+
+@router.get("/all")
+async def list_api():
+    return {"users": await UsersDAO.find_all()}
 
 
 @router.post("/register")
