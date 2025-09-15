@@ -38,8 +38,8 @@ async def update_conclusions_api():
 
 
 @router.get("/all")
-async def all_conclusions_api():
-    return await all_conclusions()
+async def all_conclusions_api(current_user: Users = Depends(get_current_user)):
+    return await all_conclusions(current_user.id)
 
 
 @router.get("/detail/{id}")
@@ -48,8 +48,8 @@ async def detail_conclusions_api(id: int):
 
 
 @router.get("/search/{text}")
-async def search_conclusions_api(text: str):
-    return await search_conclusions(text)
+async def search_conclusions_api(text: str, current_user: Users = Depends(get_current_user)):
+    return await search_conclusions(text, current_user.id)
 
 
 @router.get("/filter")

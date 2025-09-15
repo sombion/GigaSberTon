@@ -70,19 +70,34 @@ class SignatureDAO(BaseDAO):
     @classmethod
     async def search(cls, search_text: str | int):
         async with async_session_maker() as session:
+            subq = (
+                select(
+                    cls.model.conclusion_id,
+                    func.count().filter(cls.model.signed == True).label("signed_count"),
+                    func.count(cls.model.users_id).label("total_count"),
+                )
+                .group_by(cls.model.conclusion_id)
+                .subquery()
+            )
+
             query = (
                 select(
-                    cls.model.__table__.columns,
-                    Conclusion.__table__.columns,
-                    Applications.__table__.columns,
+                    Conclusion.id.label("conclusion_id"),
+                    Applications.id.label("application_id"),
+                    Applications.fio,
+                    Applications.cadastral_number,
+                    Applications.address,
+                    Applications.departure_date,
                 )
-                .join(Conclusion, cls.model.conclusion_id == Conclusion.id)
+                .select_from(subq)
+                .join(Conclusion, subq.c.conclusion_id == Conclusion.id)
                 .join(Applications, Conclusion.applications_id == Applications.id)
                 .where(
+                    subq.c.signed_count == subq.c.total_count,
                     or_(
                         Applications.cadastral_number.ilike(f"%{search_text}%"),
                         Applications.fio.ilike(f"%{search_text}%"),
-                    )
+                    ),
                 )
             )
             result = await session.execute(query)
@@ -96,24 +111,40 @@ class SignatureDAO(BaseDAO):
         date_to: datetime | None,
     ):
         async with async_session_maker() as session:
+            subq = (
+                select(
+                    cls.model.conclusion_id,
+                    func.count().filter(cls.model.signed == True).label("signed_count"),
+                    func.count(cls.model.users_id).label("total_count"),
+                )
+                .group_by(cls.model.conclusion_id)
+                .subquery()
+            )
+
             query = (
                 select(
-                    cls.model.__table__.columns,
-                    Conclusion.__table__.columns,
-                    Applications.__table__.columns,
+                    Conclusion.id.label("conclusion_id"),
+                    Applications.id.label("application_id"),
+                    Applications.fio,
+                    Applications.cadastral_number,
+                    Applications.address,
+                    Applications.departure_date,
                 )
-                .join(Conclusion, cls.model.conclusion_id == Conclusion.id)
+                .select_from(subq)
+                .join(Conclusion, subq.c.conclusion_id == Conclusion.id)
                 .join(Applications, Conclusion.applications_id == Applications.id)
+                .where(subq.c.signed_count == subq.c.total_count)
             )
             if street:
-                query = query.where(Applications.street == street)
+                streets_list = [r.strip() for r in street.split(",") if r.strip()]
+                query = query.filter(Applications.street.in_(streets_list))
 
             if date_from and date_to:
-                query = query.where(cls.model.create_date.between(date_from, date_to))
+                query = query.where(Conclusion.create_date.between(date_from, date_to))
             elif date_from:
-                query = query.where(cls.model.create_date >= date_from)
+                query = query.where(Conclusion.create_date >= date_from)
             elif date_to:
-                query = query.where(cls.model.create_date <= date_to)
+                query = query.where(Conclusion.create_date <= date_to)
 
             result = await session.execute(query)
             return result.mappings().all()

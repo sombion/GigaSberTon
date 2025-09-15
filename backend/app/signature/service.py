@@ -25,7 +25,7 @@ async def update_signature(users_id: int, conclusion_id: int):
     signature_data: Signature = await SignatureDAO.update(signature_data.id)
 
     conclusion_data: Conclusion = await ConclusionDAO.find_one_or_none(id=conclusion_id)
-    
+
     if not conclusion_data:
         raise {"detail": "Заявление комиссии не найдено"}
 
@@ -58,7 +58,7 @@ async def update_signature(users_id: int, conclusion_id: int):
 
 async def search_signature(text: str):
     signatures_data = await SignatureDAO.search(text)
-    return {"count": len(signatures_data), "signature": signatures_data}
+    return {"count": len(signatures_data), "signatures": signatures_data}
 
 
 async def filter_signature(
@@ -67,4 +67,4 @@ async def filter_signature(
     date_to: datetime | None,
 ):
     signatures_data = await SignatureDAO.filter(street, date_from, date_to)
-    return {"count": len(signatures_data), "applications": signatures_data}
+    return {"count": len(signatures_data), "signatures": signatures_data}
