@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Регистрация</title>
   <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="../toasts/styles.css">
 </head>
 <body>
   <div class="auth-container">
@@ -11,7 +12,8 @@
     <form>
       <label for="login">Логин</label>
       <input type="text" id="login" name="login" required>
-      <label for="login">ФИО</label>
+      
+      <label for="fio">ФИО</label>
       <input type="text" id="fio" name="fio" required>
 
       <label for="email">Почта</label>
@@ -28,5 +30,10 @@
       <p class="switch-link">Уже есть аккаунт? <a href="login.html">Войти</a></p>
     </form>
   </div>
+
+  <div id="toast" class="toast hidden">Уведомление!</div>
+
+  <script src="../toasts/main.js"></script>
+  <script src="requests_register.js"></script>
 </body>
 </html>

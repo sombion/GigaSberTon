@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выход</title>
+</head>
+<body>
+    <div id="message"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/auth/logout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({})
+                });
+    
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    document.getElementById('message').textContent = errorData.message || 'Ошибка авторизации';
+                    return;
+                }
+    
+                console.log('Logout successful');
+                window.location.href = '/auth/login.html';
+            } catch (error) {
+                console.error('Error during logout:', error);
+                document.getElementById('message').textContent = 'Ошибка при авторизации';
+            }
+        });
+    </script>
+</body>
+</html>
