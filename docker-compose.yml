@@ -1,0 +1,75 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "15672:15672" # Management UI
+      - "5672:5672" # AMQP
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  db_app:
+    image: postgres:16
+    container_name: db_app
+    command: -p 1221
+    expose:
+      - 1221
+    env_file:
+      - ./backend/.env-non-dev
+  agent_app:
+    build:
+      context: ./agent
+    env_file:
+      - ./agent/.env-non-dev
+    container_name: agent_app
+    command: [ "gunicorn", "main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000" ]
+    ports:
+      - "8001:8000"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db_app:
+        condition: service_started
+    restart: unless-stopped
+  bot_app:
+    build:
+      context: ./bot
+    env_file:
+      - ./bot/.env-non-dev
+    container_name: bot_app
+    command: [ "python", "main.py" ]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db_app:
+        condition: service_started
+    restart: unless-stopped
+  backend_app:
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env-non-dev
+    container_name: backend_app
+    command: ["/app/docker/app.sh"]
+    ports:
+      - 8000:8000
+    volumes:
+      - ./doc:/app/doc  # сохраняем файлы на хосте
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      db_app:
+        condition: service_started
+    restart: unless-stopped
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend_app
+    ports:
+      - "8080:80"
+    restart: unless-stopped

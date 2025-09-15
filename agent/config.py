@@ -7,8 +7,11 @@ class Settings(BaseSettings):
     MODEL: str
     SCOPE: str
 
+    RABBIT_HOST: str
+    RABBIT_PORT: int
+
     model_config = SettingsConfigDict(env_file='.env')
 
-router = RabbitRouter()
-
 settings = Settings()
+
+router = RabbitRouter(host=settings.RABBIT_HOST, port=settings.RABBIT_PORT)

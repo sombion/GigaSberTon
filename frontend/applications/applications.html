@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>Все заявления</title>
-  <link rel="stylesheet" href="applications.css" />
+  <link rel="stylesheet" href="../applications/applications.css" />
   <link rel="stylesheet" href="../filter/filter.css"/>
   <link rel="stylesheet" href="../toasts/styles.css"/>
 </head>
 <body>
-  <div class="page"> 
+  <div class="page">
     <!-- Верхняя панель -->
     <div class="header">
       <nav class="tabs">
@@ -44,14 +44,14 @@
   </div>
 
   <div class="assign-row">
-    <input 
-      type="text" 
-      id="applicationsInput" 
-      placeholder="Напишите номера заявлений (Пример: 1 или 1, 2 или 1-4)" 
+    <input
+      type="text"
+      id="applicationsInput"
+      placeholder="Напишите номера заявлений (Пример: 1 или 1, 2 или 1-4)"
     />
-    <input 
-      type="date" 
-      id="assignDate" 
+    <input
+      type="date"
+      id="assignDate"
       style="max-width: 110px;"
     />
     <button id="assignBtn">Назначить</button>
@@ -99,17 +99,17 @@
           <span>Иванов И.И. | 77:01:0000000:111 | ЦАО</span>
           <a href="application_details.html" class="btn-details">Подробнее</a>
         </div>
-        
+
       </main>
     </div>
   </div>
 
   <div id="toast" class="toast hidden">Уведомление!</div>
 
-  <script src="requests.js"></script>
+  <script src="../applications/requests.js"></script>
   <script src="../filter/filter.js"></script>
   <script src="../toasts/main.js"></script>
-  <script src="applications.js"></script>
+  <script src="../applications/applications.js"></script>
   <script src="../badge.js"></script>
   <script src="../check_user.js"></script>
 

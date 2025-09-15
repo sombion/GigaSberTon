@@ -18,6 +18,8 @@ async def update_signature(users_id: int, conclusion_id: int):
     signature_data: Signature = await SignatureDAO.find_one_or_none(
         users_id=users_id, conclusion_id=conclusion_id
     )
+    if not signature_data:
+        raise {"detail": "Документ не найден"}
 
     if signature_data.signed:
         raise {"datail": "Документ уже подписан"}

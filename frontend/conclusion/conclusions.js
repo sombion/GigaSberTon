@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
   approveBtn.addEventListener("click", () => {
     if (currentId) {
       console.log("Заявление подписано:", currentId);
-      subscribe_signature(currentId)
+      subscribe_signature(currentId);
       modal.style.display = "none";
     }
   });
@@ -85,8 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Закрытие модалки
   closeBtn.addEventListener("click", () => modal.style.display = "none");
-  window.addEventListener("click", e => { 
-    if (e.target === modal) modal.style.display = "none"; 
+  window.addEventListener("click", e => {
+    if (e.target === modal) modal.style.display = "none";
   });
 
 

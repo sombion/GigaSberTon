@@ -20,7 +20,7 @@ bot = Bot(
     token=settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
 
-broker = RabbitBroker()
+broker = RabbitBroker(host=settings.RABBIT_HOST, port=settings.RABBIT_PORT)
 
 
 # --- Модель данных для Rabbit ---

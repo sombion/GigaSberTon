@@ -18,7 +18,7 @@ async function load_conclusions() {
         let foundCount = document.getElementById('foundCount')
         let textSearch = document.getElementById('textSearch')
         let word = document.getElementById('word')
-        
+
         foundCount.textContent = count
         textSearch.textContent = "Всего: "
         word.textContent = declension(count)
@@ -35,9 +35,9 @@ async function load_conclusions() {
             conclusions.forEach(conclusion => {
                 const card = document.createElement("div");
                 card.className = "app-card";
-                
+
                 let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
-                
+
                 card.innerHTML = `
                     <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
                         <span>${conclusion.conclusion_id}</span>
@@ -46,7 +46,7 @@ async function load_conclusions() {
                         <span><b>Телефон:</b> ${conclusion.phone}</span>
                         <span><b>Дата создания:</b> ${formatted}</span>
                     </div>
-                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.id}">Подписать</button>`}
+                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.conclusion_id}">Подписать</button>`}
                 `;
 
                 conclusionsList.appendChild(card);
@@ -78,7 +78,7 @@ async function load_street() {
         const districtList = document.getElementById("districtList");
         districtList.innerHTML = "";
 
-        
+
         streets.forEach(street => {
             const streetCard = document.createElement("label");
             streetCard.dataset.district = street.street;
@@ -95,7 +95,7 @@ async function load_street() {
 
             districtList.appendChild(streetCard);
         });
-        
+
 
     } catch (error) {
         showToast(`Ошибка загрузки заявок: ${error}`);
@@ -134,7 +134,7 @@ async function search_conclusions() {
         let foundCount = document.getElementById('foundCount')
         let textSearch = document.getElementById('textSearch')
         let word = document.getElementById('word')
-        
+
         foundCount.textContent = count
         textSearch.textContent = "Найдено: "
         word.textContent = declension(count)
@@ -153,7 +153,7 @@ async function search_conclusions() {
                 card.className = "app-card";
 
                 let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
-                
+
                 card.innerHTML = `
                     <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
                         <span>${conclusion.conclusion_id}</span>
@@ -162,7 +162,7 @@ async function search_conclusions() {
                         <span><b>Телефон:</b> ${conclusion.phone}</span>
                         <span><b>Дата создания:</b> ${formatted}</span>
                     </div>
-                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.id}">Подписать</button>`}
+                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.conclusion_id}">Подписать</button>`}
                 `;
 
                 conclusionsList.appendChild(card);
@@ -214,7 +214,7 @@ async function apply_filters() {
         let foundCount = document.getElementById('foundCount');
         let textSearch = document.getElementById('textSearch');
         let word = document.getElementById('word');
-        
+
         foundCount.textContent = count;
         textSearch.textContent = "Найдено: ";
         word.textContent = declension(count);
@@ -234,7 +234,7 @@ async function apply_filters() {
                 card.dataset.district = conclusion.district;
 
                 let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
-                
+
                 card.innerHTML = `
                     <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
                         <span>${conclusion.conclusion_id}</span>
@@ -243,7 +243,7 @@ async function apply_filters() {
                         <span><b>Телефон:</b> ${conclusion.phone}</span>
                         <span><b>Дата создания:</b> ${formatted}</span>
                     </div>
-                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.id}">Подписать</button>`}
+                    ${conclusion.signed ? "": `<button class="sign-btn" id="${conclusion.conclusion_id}">Подписать</button>`}
                 `;
 
                 conclusionsList.appendChild(card);
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dateTo = document.getElementById("dateTo");
 
     const clearFiltersBtn = document.getElementById("clearFilters");
-    
+
     const filterVisit = document.getElementById("signedVisit");
 
     // --- Сброс фильтров ---
