@@ -4,29 +4,29 @@
   <meta charset="UTF-8">
   <title>Подробнее о заявлении</title>
   <link rel="stylesheet" href="application_details.css">
+  <link rel="stylesheet" href="../toasts/styles.css">
 </head>
 <body>
   <div class="page">
     <!-- Верхняя часть -->
     <div class="header">
-      <!-- Навигация -->
       <nav class="tabs">
-        <a href="../applications/applications.html">Все заявления</a>
+        <a href="../applications/applications.html" class="active">Все заявления</a>
         <a href="../conclusion/conclusion.html">Заключения комиссии</a>
         <a href="../signed/signed.html">Подписанные документы</a>
       </nav>
-  <div class="right-controls">
-    <div class="notifications">
-      <a href="../notifications/notifications.html" class="bell">
+       <div class="right-controls">
+        <div class="notifications">
+       <a href="../notifications/notifications.html" class="bell">
         🔔
-        <span class="badget">3</span>
+        <span class="badge">3</span>
       </a>
     </div>
     <div class="profile-link">
       <a href="../profile/profile.html">Личный кабинет</a>
     </div>
-  </div>
-</div>
+    </div>
+    </div>
 
     <!-- Основное содержимое -->
     <div class="split-content">
@@ -44,7 +44,7 @@
         </div>
 
         <div class="card">
-          <h3>Статус<span class="badge warn">На проверке</span>
+          <h3>Статус<span class="badges warn">На проверке</span>
           </h3>
         </div>
 
@@ -57,9 +57,9 @@
       <div class="right-col">
         <div class="card">
           <h3>Документ</h3>
-          <iframe src="egpn_file.pdf" title="Выписка ЕГРН"></iframe>
+          <iframe src="" title="Выписка ЕГРН"></iframe>
           <div class="doc-actions">
-            <a href="egpn_file.pdf" download class="btn-download">Скачать PDF</a>
+            <a href="" download class="btn-download">Скачать</a>
           </div>
         </div>
       </div>
@@ -67,5 +67,8 @@
   </div>
 
   <script src="request.js"></script>
+  <script src="../toasts/main.js"></script>
+  <script src="../badge.js"></script>
+
 </body>
 </html>

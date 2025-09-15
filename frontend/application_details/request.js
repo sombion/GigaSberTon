@@ -37,7 +37,7 @@ async function load_application_details() {
 
       // статус
       document.querySelector(".card:nth-of-type(2)").innerHTML = `
-        <h3>Статус <span class="badge warn">${application.status}</span></h3>
+        <h3>Статус <span class="badges warn">${application.status}</span></h3>
       `;
 
       // документ
