@@ -17,6 +17,10 @@ async def get_password_hash(password: str) -> str:
 async def verify_password(plain_password, hashed_password) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
+async def all_user():
+    return {
+        "users": await UsersDAO.all()
+    }
 
 async def authenticate_user(login: str, password: str) -> Optional[Users]:
     user: Users = await UsersDAO.find_one_or_none(login=login)

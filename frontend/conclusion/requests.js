@@ -299,4 +299,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         load_conclusions();
     });
+
+    const assignBtn = document.getElementById("assignBtn");
+
+    assignBtn.addEventListener("click", () => {
+        window.location.href = "/conclusion_create/conclusion_create.html";
+    });
 });
