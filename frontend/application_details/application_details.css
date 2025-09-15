@@ -203,7 +203,7 @@ body {
 }
 
 /* Метки */
-.badge {
+.badges {
   display: inline-block;
   padding: 6px 14px;
   border-radius: 20px;
@@ -211,9 +211,23 @@ body {
   font-size: 13px;
 }
 
-.badge.warn {
+.badges.warn {
   background: #fff4e6;
   color: #f2994a;
+}
+
+/* Красный кружок */
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #e63946;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 /* Кнопки */
@@ -235,12 +249,12 @@ body {
 }
 
 .actions .btn {
-  background: #2f80ed;
+  background: #6d6d6d;
   color: #fff;
 }
 
 .actions .btn:hover {
-  background: #2566c7;
+  background: #9f9f9f;
   transform: translateY(-1px);
 }
 
@@ -261,8 +275,8 @@ body {
 }
 
 .actions .ghost:hover {
-  border-color: #2f80ed;
-  color: #2f80ed;
+  border-color: #a7a7a7;
+  color: #c8c8c8;
 }
 
 .actions .del {
