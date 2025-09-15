@@ -42,26 +42,26 @@ class SignatureDAO(BaseDAO):
             subq = (
                 select(
                     cls.model.conclusion_id,
-                    func.count().label("signed_count")
+                    func.count().filter(cls.model.signed == True).label("signed_count"),
+                    func.count(cls.model.users_id).label("total_count"),
                 )
-                .where(cls.model.signed == True)
                 .group_by(cls.model.conclusion_id)
                 .subquery()
             )
 
-            # Считаем общее количество пользователей (по user_id)
-            total_users_subq = select(func.count(func.distinct(cls.model.users_id))).scalar_subquery()
-
             query = (
                 select(
-                    cls.model.__table__.columns,
-                    Conclusion.__table__.columns,
-                    Applications.__table__.columns,
+                    Conclusion.id.label("conclusion_id"),
+                    Applications.id.label("application_id"),
+                    Applications.fio,
+                    Applications.cadastral_number,
+                    Applications.address,
+                    Applications.departure_date,
                 )
-                .join(Conclusion, cls.model.conclusion_id == Conclusion.id)
+                .select_from(subq)
+                .join(Conclusion, subq.c.conclusion_id == Conclusion.id)
                 .join(Applications, Conclusion.applications_id == Applications.id)
-                .join(subq, subq.c.conclusion_id == Conclusion.id)
-                .where(subq.c.signed_count == total_users_subq)
+                .where(subq.c.signed_count == subq.c.total_count)
             )
 
             result = await session.execute(query)
@@ -81,7 +81,7 @@ class SignatureDAO(BaseDAO):
                 .where(
                     or_(
                         Applications.cadastral_number.ilike(f"%{search_text}%"),
-                        Applications.fio.ilike(f"%{search_text}%")
+                        Applications.fio.ilike(f"%{search_text}%"),
                     )
                 )
             )

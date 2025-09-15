@@ -157,6 +157,7 @@ def applicant_statement(
     applicant: str,
     email: str,
     phone_number: str,
+    problem: str,
     address: str,
 ):
     try:
@@ -179,6 +180,7 @@ def applicant_statement(
             "{APPLICANT}": applicant,
             "{EMAIL}": email,
             "{PHONE_NUMBER}": phone_number,
+            "{PROBLEM}": problem,
             "{ADDRESS}": address,
         }
 
