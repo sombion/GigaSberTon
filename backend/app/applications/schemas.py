@@ -9,6 +9,7 @@ class SCreateApplications(BaseModel):
     phone: str = Field(...),
     email: str = Field(...),
     cadastral_number: str = Field(...),
+    problem: str = Field(...)
     address: str = Field(...),
 
 class SApplicationsDeparture(BaseModel):
