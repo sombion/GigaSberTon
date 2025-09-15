@@ -20,6 +20,7 @@ async def create_applications(
     phone: str,
     email: str,
     cadastral_number: str,
+    problem: str,
     address: str,
 ):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -39,6 +40,7 @@ async def create_applications(
         applicant=applicant,
         email=email,
         phone_number=phone,
+        problem=problem,
         address=address,
     )
 

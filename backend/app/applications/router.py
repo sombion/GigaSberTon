@@ -30,9 +30,10 @@ async def create_applications_api(applications_data: SCreateApplications):
         applications_data.phone,
         applications_data.email,
         applications_data.cadastral_number,
+        applications_data.problem,
         applications_data.address,
     )
-    
+
 
 @router.patch("/departure")
 async def update_departure_api(
