@@ -19,7 +19,7 @@
     <div class="notifications">
         <a href="../notifications/notifications.html" class="bell active">
             🔔
-            <span class="badge">3</span>
+            <span class="badge">0</span>
         </a>
     </div>
     <div class="profile-link">
@@ -61,35 +61,7 @@
   </div>
 
   <script src="../badge.js"></script>
-
-  <script>
-    function updateCounter() {
-      const total = document.querySelectorAll(".notification-card").length;
-      const unread = document.querySelectorAll(".notification-card:not(.read)").length;
-      document.getElementById("counter").textContent =
-        `Всего уведомлений: ${total} | Непрочитанных: ${unread}`;
-    }
-
-    function markRead(btn) {
-      let card = btn.closest(".notification-card");
-      card.classList.add("read");
-      updateCounter();
-    }
-
-    function deleteNotification(btn) {
-      let card = btn.closest(".notification-card");
-      card.remove();
-      updateCounter();
-    }
-
-    function markAllRead() {
-      let cards = document.querySelectorAll(".notification-card");
-      cards.forEach(card => card.classList.add("read"));
-      updateCounter();
-    }
-
-    // Первоначальный расчет
-    updateCounter();
-  </script>
+  <script src="../notifications/notifications.js"></script>
+  <script src="../check_user.js"></script>
 </body>
 </html>
