@@ -51,7 +51,7 @@ async function load_applications() {
                         <span><b>Телефон:</b> ${application.phone}</span>
                         <span><b>Дата выезда:</b> ${formatted}</span>
                     </div>
-                    <a href="application_details.html?id=${application.id}" class="btn-details">Подробнее</a>
+                    <a href="../application_details/application_details.html?id=${application.id}" class="btn-details">Подробнее</a>
                 `;
 
                 applicationsList.appendChild(card);
@@ -172,7 +172,7 @@ async function search_applications() {
                         <span><b>Телефон:</b> ${application.phone}</span>
                         <span><b>Дата выезда:</b> ${formatted}</span>
                     </div>
-                    <a href="application_details.html?id=${application.id}" class="btn-details">Подробнее</a>
+                    <a href="../application_details/application_details.html?id=${application.id}" class="btn-details">Подробнее</a>
                 `;
 
                 applicationsList.appendChild(card);
@@ -257,7 +257,7 @@ async function apply_filters() {
                         <span><b>Телефон:</b> ${application.phone}</span>
                         <span><b>Дата выезда:</b> ${formatted}</span>
                     </div>
-                    <a href="application_details.html?id=${application.id}" class="btn-details">Подробнее</a>
+                    <a href="../application_details/application_details.html?id=${application.id}" class="btn-details">Подробнее</a>
                 `;
 
                 applicationsList.appendChild(card);

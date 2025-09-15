@@ -35,10 +35,17 @@ async function load_conclusions() {
             conclusions.forEach(conclusion => {
                 const card = document.createElement("div");
                 card.className = "app-card";
-                // card.dataset.district = conclusions.district;
-
+                
+                let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
+                
                 card.innerHTML = `
-                    <span>${conclusion.fio} | ${conclusion.cadastral_number} | ${conclusion.phone}</span>
+                    <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
+                        <span> ${conclusion.id}</span>
+                        <span><b>ФИО:</b> ${conclusion.fio}</span>
+                        <span><b>Адрес:</b> ${conclusion.street}</span>
+                        <span><b>Телефон:</b> ${conclusion.phone}</span>
+                        <span><b>Дата создания:</b> ${formatted}</span>
+                    </div>
                     <button class="sign-btn" id="${conclusion.id}">Подписать</button>
                 `;
 
@@ -52,9 +59,9 @@ async function load_conclusions() {
     }
 }
 
-async function load_region() {
+async function load_street() {
     try {
-        let response = await fetch('http://127.0.0.1:8000/api/applications/region', {
+        let response = await fetch('http://127.0.0.1:8000/api/applications/street', {
             method: 'GET',
             credentials: 'include'
         });
@@ -65,28 +72,28 @@ async function load_region() {
             throw new Error(`Ошибка запроса: ${response.status}`);
         }
 
-        let regionData = await response.json();
-        let regions = regionData.regions
+        let streetData = await response.json();
+        let streets = streetData.streets
 
         const districtList = document.getElementById("districtList");
         districtList.innerHTML = "";
 
         
-        regions.forEach(region => {
-            const regionCard = document.createElement("label");
-            regionCard.dataset.district = region.region;
+        streets.forEach(street => {
+            const streetCard = document.createElement("label");
+            streetCard.dataset.district = street.street;
 
             // создаём чекбокс
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.name = "district";
-            checkbox.value = region.region;
+            checkbox.value = street.street;
 
             // добавляем чекбокс и текст
-            regionCard.appendChild(checkbox);
-            regionCard.appendChild(document.createTextNode(" " + region.region));
+            streetCard.appendChild(checkbox);
+            streetCard.appendChild(document.createTextNode(" " + street.street));
 
-            districtList.appendChild(regionCard);
+            districtList.appendChild(streetCard);
         });
         
 
@@ -144,10 +151,17 @@ async function search_conclusions() {
             conclusions.forEach(conclusion => {
                 const card = document.createElement("div");
                 card.className = "app-card";
-                card.dataset.district = application.district;
 
+                let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
+                
                 card.innerHTML = `
-                    <span>${conclusion.fio} | ${conclusion.cadastral_number} | ${conclusion.phone}</span>
+                    <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
+                        <span> ${conclusion.id}</span>
+                        <span><b>ФИО:</b> ${conclusion.fio}</span>
+                        <span><b>Адрес:</b> ${conclusion.street}</span>
+                        <span><b>Телефон:</b> ${conclusion.phone}</span>
+                        <span><b>Дата создания:</b> ${formatted}</span>
+                    </div>
                     <button class="sign-btn" id="${conclusion.id}">Подписать</button>
                 `;
 
@@ -165,18 +179,21 @@ async function search_conclusions() {
 async function apply_filters() {
     try {
         // Собираем выбранные районы
-        const region = [...document.querySelectorAll("input[name='district']:checked")]
+        const street = [...document.querySelectorAll("input[name='district']:checked")]
             .map(cb => cb.value);
 
         // Даты
         const dateFrom = document.getElementById("dateFrom").value;
         const dateTo = document.getElementById("dateTo").value;
 
+        const signed = document.getElementById("signedVisit").checked;
+
         // Формируем query параметры
         const params = new URLSearchParams();
-        if (region.length > 0) params.append("region", region.join(","));
+        if (street.length > 0) params.append("street", street.join(","));
         if (dateFrom) params.append("date_from", dateFrom);
         if (dateTo) params.append("date_to", dateTo);
+        if (signed) params.append("signed", "true");
 
         // Отправляем запрос
         let response = await fetch(`http://127.0.0.1:8000/api/conclusion/filter?${params.toString()}`, {
@@ -192,7 +209,7 @@ async function apply_filters() {
 
         let conclusionsData = await response.json();
         let count = conclusionsData.count;
-        let applications = conclusionsData.conclusion;
+        let conclusions = conclusionsData.conclusions;
 
         let foundCount = document.getElementById('foundCount');
         let textSearch = document.getElementById('textSearch');
@@ -211,13 +228,21 @@ async function apply_filters() {
             emptyBlock.textContent = "Ничего не найдено по выбранным фильтрам.";
             conclusionsList.appendChild(emptyBlock);
         } else {
-            applications.forEach(application => {
+            conclusions.forEach(conclusion => {
                 const card = document.createElement("div");
                 card.className = "app-card";
-                card.dataset.district = application.district;
+                card.dataset.district = conclusion.district;
 
+                let formatted = new Date(conclusion.create_date).toLocaleDateString("ru-RU").replace(/\./g, "-");
+                
                 card.innerHTML = `
-                    <span>${conclusion.fio} | ${conclusion.cadastral_number} | ${conclusion.phone}</span>
+                    <div class="application" style="display: flex; gap: 15px; padding: 10px; border-radius: 8px;">
+                        <span> ${conclusion.id}</span>
+                        <span><b>ФИО:</b> ${conclusion.fio}</span>
+                        <span><b>Адрес:</b> ${conclusion.street}</span>
+                        <span><b>Телефон:</b> ${conclusion.phone}</span>
+                        <span><b>Дата создания:</b> ${formatted}</span>
+                    </div>
                     <button class="sign-btn" id="${conclusion.id}">Подписать</button>
                 `;
 
@@ -236,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Загрузка заявлений
     load_conclusions();
     // Загрузка регионов
-    load_region();
+    load_street();
 
     // Поиск
     const searchBtn = document.getElementById("searchBtn");
