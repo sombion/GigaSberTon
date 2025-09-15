@@ -20,6 +20,13 @@ class UsersDAO(BaseDAO):
             return result.scalar()
 
     @classmethod
+    async def all(cls):
+        async with async_session_maker() as session:
+            query = select(cls.model.id, cls.model.login, cls.model.fio, cls.model.email)
+            result = await session.execute(query)
+            return result.mappings().all()
+
+    @classmethod
     async def update_fio(cls, id: int, fio: str):
         async with async_session_maker() as session:
             stmt = (

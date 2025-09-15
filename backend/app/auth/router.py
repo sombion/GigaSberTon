@@ -11,6 +11,7 @@ from app.auth.schemas import (
     SEditPassword,
 )
 from app.auth.service import (
+    all_user,
     register,
     login,
     logout,
@@ -29,7 +30,7 @@ async def me_api(current_user=Depends(get_current_user)):
 
 @router.get("/all")
 async def list_api():
-    return {"users": await UsersDAO.find_all()}
+    return await all_user()
 
 
 @router.post("/register")
