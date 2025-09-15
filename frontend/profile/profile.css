@@ -333,3 +333,15 @@ delete-account-btn {
 .btn-confirm:hover {
   background: #922020;
 }
+
+input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;       /* ширина поля */
+    max-width: 100%;    /* чтобы не выходило за контейнер */
+    padding: 8px;       /* внутренние отступы */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }

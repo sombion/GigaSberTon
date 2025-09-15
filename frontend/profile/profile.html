@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Настройки профиля</title>
   <link rel="stylesheet" href="profile.css">
-  <script defer src="script.js"></script>
+  <link rel="stylesheet" href="../toasts/styles.css">
 </head>
 <body>
   <div class="page">
@@ -70,19 +70,11 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Модальное окно -->
-  <div class="modal-overlay" id="delete-modal">
-    <div class="modal">
-      <h2>Подтверждение удаления</h2>
-      <p>Введите пароль для подтверждения удаления аккаунта:</p>
-      <input type="password" id="delete-password" placeholder="Ваш пароль">
-      <div class="modal-actions">
-        <button class="btn-cancel">Отмена</button>
-        <button class="btn-confirm">Удалить</button>
-      </div>
-    </div>
-  </div>
+  <div id="toast" class="toast hidden">Уведомление!</div>
+
+  <script src="requests.js"></script>
+  <script src="profile.js"></script>
+  <script src="../toasts/main.js"></script>
 </body>
 </html>
